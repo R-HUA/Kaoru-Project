@@ -1,0 +1,37 @@
+GET http://localhost:8080/article/articleList/1
+token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3YTdiMjNmYjRmOTQ0OWM5OGM2OTJkNmUwMzc2NTFiMyIsInN1YiI6IjEiLCJpc3MiOiJNaXp1a2kgS2FvcnUiLCJpYXQiOjE2ODY5NTA2MzQsImV4cCI6MTY4ODI0NjYzNH0.ZJY2wG8ykbwFyQbEeg-VRdhJJGP73t3ukRqiUvXE1bo
+
+
+
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "userName":"sg",
+  "password":"1234"
+}
+
+
+###
+GET http://localhost:8080/article/articleList/1
+
+
+###
+
+POST http://localhost:8080/logout
+token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3YTdiMjNmYjRmOTQ0OWM5OGM2OTJkNmUwMzc2NTFiMyIsInN1YiI6IjEiLCJpc3MiOiJNaXp1a2kgS2FvcnUiLCJpYXQiOjE2ODY5NTA2MzQsImV4cCI6MTY4ODI0NjYzNH0.ZJY2wG8ykbwFyQbEeg-VRdhJJGP73t3ukRqiUvXE1bo
+
+
+###
+
+POST http://localhost:8080/reply/
+Content-Type: application/json
+
+{"repliedId":1,"type":0,"rootId":-1,"toCommentId":-1,"toCommentUserId":-1,"content":"评论了文章"}
+
+
+###
+GET http://localhost:8080/user/info
+token: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3YTdiMjNmYjRmOTQ0OWM5OGM2OTJkNmUwMzc2NTFiMyIsInN1YiI6IjEiLCJpc3MiOiJNaXp1a2kgS2FvcnUiLCJpYXQiOjE2ODY5NTA2MzQsImV4cCI6MTY4ODI0NjYzNH0.ZJY2wG8ykbwFyQbEeg-VRdhJJGP73t3ukRqiUvXE1bo
+

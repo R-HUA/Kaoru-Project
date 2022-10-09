@@ -1,0 +1,8 @@
+#timelines-warp {
+    width: 70%;
+}
+@media (max-width: 767px) {
+    #timelines-warp {
+        width: 100%;
+    }
+}
