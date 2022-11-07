@@ -1,0 +1,207 @@
+charset "utf-8"
+/*CSS Stylesheet*/
+
+/*Standard re-set.
+Prevents annoying browser defaults
+See this article http://html5doctor.com/html-5-reset-stylesheet for more
+*/
+html, body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote {
+	margin: 0px; padding: 0px; border: 0px;
+}
+body {
+  padding: 0px;
+  margin: 0px;
+  background-color: #333;
+  text-align: center;
+}
+
+.container {
+	text-align: center;
+	position: relative;
+	min-height: 113vh;
+	font-family: Montserrat, sans-serif;
+	background-color: dark grey;
+	width: 1024px;
+	margin: 0 auto;
+	background: white;
+}
+
+
+#header {
+	margin: 0 auto;
+	margin-top: -20px;
+	float: center;
+	width: 1024px;
+	height: 100px;
+	background-color: #ff7400;
+	color: white;
+	align-content: center;
+	padding-top: 20px;
+}
+#header h1 {
+	font-family: "Times New Roman",sans-serif;
+	margin: 0;
+	padding-top:10px;
+	font-size: 60px;
+}
+
+#header .img-left {
+	float: left;
+	height: 100px;
+	margin-left: 20px;
+	margin-top: -80px;
+}
+
+.main h2 {
+	font-size: 35px;
+}
+
+.main {
+	color: black;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+.main p {
+	font-size: 13px;
+}
+
+.left {
+	width: 40%;
+	display: block;
+	align-self: left;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.right {
+	width: 40%;
+	display: block;
+	align-self: right;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.vertical {
+  border-left: 4px solid #ff7400;;
+  height: 400px;
+  position:absolute;
+  left: 50%;
+}
+
+.wrapper {
+	display: flex;
+	text-align: left;
+	margin-top: 20px;
+	margin-right: auto;
+}
+
+.wrapperlogin {
+	display: flex;
+	text-align: left;
+	margin-top: 20px;
+}
+
+.profilePicture {
+	width: 200px;
+	length: 200px;
+}
+
+.animalHome {
+   height: 400px;
+	 border-radius: 40px;
+}
+
+.nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ff7400;
+}
+
+.nav li {
+    float: left;
+}
+
+.nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+		border-top-left-radius: 10px 10px;
+		border-top-right-radius: 10px 10px;
+}
+
+.nav li a:hover:not(.active) {
+    background-color: #e35b04;
+}
+
+.active {
+    background-color: white;
+	color: black !important;
+}
+
+p {
+	color: black;
+	font-family: "MS Serif", "New York", seris;
+	font-size: 15px;
+
+}
+a {
+	color: initial;
+	text-decoration: initial;
+}
+
+footer {
+	height: 40px;
+    margin-top: 335px;
+}
+.footnav ul {
+    list-style-type: none;
+    margin-left: 10px;
+	margin-right: 10px;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+.footnav li {
+    float: left;
+}
+
+.footnav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.footnav li a:hover:not(.active) {
+    background-color: #111;
+}
+.footactive{
+    background-color: #0FF;
+}
+
+.paragraph p{
+
+	margin:1em 0;
+	padding:0 0 0 2em;
+	text-indent:0.01em;
+	font:normal normal 16px/1.6em "DM Sans";
+	color:#000;
+	text-align:justify
+
+}
+
+.paragraph h2{
+	margin:1em 0;
+	padding:0 0 0 1em;
+	font:normal normal 24px/2.4em;
+	color:#000;
+	text-align: left;
+	font-weight:700;
+	line-height:1.2;
+}
