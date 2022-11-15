@@ -1,0 +1,26 @@
+.profile-page {
+    width: 75%;
+    margin-left: 5%;
+}
+
+.profile-upper{
+    border-radius: 8px;
+    border-left: 1px solid #e0e0e080;
+    border-right: 1px solid #e0e0e080;
+
+}
+
+
+@media (max-width: 1180px) {
+    .profile-page {
+        width: 85%;
+        margin: 0;
+    }
+}
+
+@media (max-width: 930px) {
+    .profile-page {
+        width: 100%;
+        margin: 0;
+    }
+}

@@ -1,0 +1,141 @@
+
+.login-from div{
+    display: block;
+    margin-bottom: 20px;
+}
+
+.login-container div p {
+    line-height: 40px;
+    font-size: 14px;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container a{
+    margin-left: 3px;
+}
+
+.login-box {
+    width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-form {
+    width: 100%;
+    display: block;
+}
+
+.login-form div{
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    text-align: right;
+    vertical-align: middle;
+    float: left;
+    font-size: 14px;
+    color: #606266;
+    line-height: 40px;
+    padding: 0 12px 0 0;
+    box-sizing: border-box;
+}
+
+.login-form span{
+    font-size: 16px;
+    color: #606266;
+}
+
+.login-form input {
+    height: 36px;
+    font-size: 14px;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    box-sizing: border-box;
+    color: #606266;
+    line-height: 40px;
+    outline: 0;
+    padding: 0 15px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+}
+
+.login-form button {
+    margin-top: 10px;
+    width: 100%;
+    line-height: 40px;
+    position: relative;
+    font-size: 14px;
+}
+
+.login-button {
+    background-color: #0d3978;
+    border-color: #0d3978;
+    color: #ffffff;
+}
+.login-button:hover {
+    background-color: #061d3c;
+    border-color: #061d3c;
+    color: #ffffff;
+}
+
+
+
+
+/* checkbox */
+.checkbox {
+    display: inline-block;
+    position: relative;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    border: 1px solid #dcdfe6;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 7px;
+}
+.checkbox.checked {
+    background-color: #0d3978;
+    border-color: #0d3978;
+}
+.checkbox.checked::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.checkbox:hover {
+    border-color: #409eff;
+}
+.checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.el-button{
+    width: 64px;
+    height: 32px;
+}

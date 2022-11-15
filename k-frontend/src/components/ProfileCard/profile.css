@@ -1,0 +1,189 @@
+.profileCard {
+    width: 100%;
+    height: fit-content;
+    margin: 10px 0 30px;
+    /*border: 1px solid #0000000d;*/
+    border-radius: 8px;
+}
+
+.profileCard > div{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+#back-icon {
+    font-size: 18px;
+}
+
+#back-icon-box {
+    width: 37px;
+    height: 37px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #0000005e;
+    transition: 0.3s;
+}
+
+#back-icon-box:hover > svg {
+   font-size: 22px;
+}
+
+.header-image{
+    margin-top: -37px;
+    height: 100px;
+    width: 100%;
+    background-color: pink;
+    background-size: contain;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#header-box {
+    width: 100%;
+    background-size: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    justify-content: flex-start ;
+    align-items: flex-start;
+    padding: 5px 0 0;
+    background-clip: content-box;
+}
+
+#profile-image {
+    width: 7.5vw;
+    height: 7.5vw;
+    background-image: url("../../../public/logo512.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    border: 3px solid #F5F5F555;
+    margin-left: 15px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+#edit-box {
+    width: 100%;
+    height: 48px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.following {
+    height: 38px;
+    width: 100px;
+    background: #fff;
+    outline: none;
+    border: 0.8px solid #1d9bf0;
+    border-radius: 50px;
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    color: #444;
+    margin-right: 15px;
+    font-size: 15px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.Follow {
+    height: 38px;
+    width: 100px;
+    background: #1d9bf0;
+    outline: none;
+    border: 0.8px solid rgb(221, 221, 221);
+    border-radius: 50px;
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    color: #fff;
+    margin-right: 15px;
+    font-size: 15px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#edit-profile:hover {
+    background: #e2e2e2c4;
+}
+
+#name-id-box {
+    display: inline-block;
+    margin: 15px 5px 0;
+    font-weight: 600;
+    line-height: 20px;
+    font-size: 20px;
+    vertical-align: middle;
+    width: 100%;
+    padding-top: 0.5vw;
+}
+
+#name-id-box > p{
+    padding-top: 0.4vw;
+}
+
+.description{
+    background: transparent;
+    border-radius: 4px;
+    border: none;
+    box-shadow: none;
+    font-size: 12px;
+    font-family: Microsoft Yahei, serif;
+    line-height: 26px;
+    height: 26px;
+    margin-top: 0.4vw;
+    margin-left: -5px;
+    padding: 0 5px;
+    position: relative;
+    top: -1px;
+    font-weight: 400;
+}
+
+#name-header {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    color: rgb(32, 32, 32);
+    font-weight: bold;
+    font-size: 21px;
+}
+
+#more-header {
+    font-weight: bold;
+    font-size: 20px;
+}
+#more-box {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 0.9px solid rgb(190, 190, 190);
+    margin-right: 10px;
+}
+
+#following-follow-box {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-left: 50px;
+    font-size: 15px;
+}
+.follow-text {
+    width: 100px;
+    color: rgb(99, 99, 99);
+    text-decoration: none;
+}
+.follow-text:hover {
+    text-decoration: underline;
+}
+#number-follow {
+    font-weight: bold;
+    color: rgb(61, 61, 61);
+}
+
+
