@@ -1,6 +1,9 @@
 package com.kaoru.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.kaoru.enmus.CustomedHttpCodeEnum;
+import com.kaoru.exception.AppSystemException;
 import com.kaoru.pojo.User;
 import com.kaoru.service.UserService;
 import com.kaoru.mapper.UserMapper;
@@ -11,8 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * 针对表【t_user(用户表)】的数据库操作Service实现
@@ -25,6 +29,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseResult login(User user) {
@@ -65,6 +72,56 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LoginUserDetails loginUser = redisCache.getCacheObject("login:" + id);
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
         return ResponseResult.okResult(userInfoVo);
+    }
+
+
+    /**
+     * Update user info.
+     * It requires the user to be logged in
+     *
+     * @param user user info
+     * @return ResponseResult
+     */
+    @Override
+    public ResponseResult updateUserInfo(User user) {
+        // filter the properties that cannot be updated
+        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user, UserInfoVo.class);
+        user = BeanCopyUtils.copyBean(userInfoVo, User.class);
+
+        Long id = WebUtils.getUserIDFromSecurityContext();
+        if (id.equals(user.getId())){
+            updateById(user);
+            return ResponseResult.okResult();
+        }
+        return ResponseResult.errorResult(CustomedHttpCodeEnum.NEED_LOGIN);
+    }
+
+    @Override
+    public ResponseResult register(User user) {
+        // check required fields
+        if (!StringUtils.hasText(user.getUserName()) || !StringUtils.hasText(user.getPassword()) || !StringUtils.hasText(user.getNickName())){
+            return ResponseResult.errorResult(CustomedHttpCodeEnum.REQUIRE_USERNAME);
+        }
+
+        // check if the username is already exist
+        checkUserName(user.getUserName());
+
+        // encrypt password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+
+        // insert into database
+        save(user);
+
+        return ResponseResult.okResult();
+    }
+
+
+    private void checkUserName(String userName){
+        User user = getOne(new QueryWrapper<User>().eq("user_name", userName));
+        if (user != null){
+            throw new AppSystemException(CustomedHttpCodeEnum.USERNAME_EXIST);
+        }
     }
 
 }

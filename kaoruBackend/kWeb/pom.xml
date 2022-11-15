@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.kaoru</groupId>
         <artifactId>kaoruBackend</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>kWeb</artifactId>
@@ -18,15 +18,13 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>com.kaoru</groupId>
             <artifactId>framework</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+
     </dependencies>
 
 </project>

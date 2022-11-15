@@ -11,7 +11,7 @@
 
     <groupId>com.kaoru</groupId>
     <artifactId>kaoruBackend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -27,6 +27,15 @@
     <dependencyManagement>
 
         <dependencies>
+
+            <dependency>
+                <groupId>com.azure.spring</groupId>
+                <artifactId>spring-cloud-azure-dependencies</artifactId>
+                <version>4.8.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
@@ -51,6 +60,7 @@
                 <artifactId>easyexcel</artifactId>
                 <version>3.0.5</version>
             </dependency>
+
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
@@ -78,21 +88,11 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <classifier>execute</classifier>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source> ${java.version} </source>
-                    <target> ${java.version} </target>
-                    <encoding> UTF-8 </encoding>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
+
 
 </project>

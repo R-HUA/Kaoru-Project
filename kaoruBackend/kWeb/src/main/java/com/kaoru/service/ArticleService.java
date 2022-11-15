@@ -22,4 +22,11 @@ public interface ArticleService extends IService<Article> {
      * @return ResponseResult JSON data
      */
     ResponseResult  getArticleDetail(Long id);
+
+    /**
+     * Update article view count to redis
+     * @param id article id
+     * @return ResponseResult JSON data
+     */
+    ResponseResult updateArticleViewCount(Long id);
 }

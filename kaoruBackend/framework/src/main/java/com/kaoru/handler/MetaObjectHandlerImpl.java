@@ -14,13 +14,7 @@ import java.util.Date;
 public class MetaObjectHandlerImpl implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        Long userId;
-        try {
-            userId = WebUtils.getUserIDFromSecurityContext();
-        } catch (Exception e) {
-            log.warn("获取ID失败, Fail to get User ID from Context: " + e.getMessage());
-            userId = -1L;    //表示非用户操作
-        }
+        Long userId = getUserId();
         this.setFieldValByName("createTime", new Date(), metaObject);
         this.setFieldValByName("createBy",userId , metaObject);
         this.setFieldValByName("updateTime", new Date(), metaObject);
@@ -29,7 +23,19 @@ public class MetaObjectHandlerImpl implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
+        Long userId = getUserId();
         this.setFieldValByName("updateTime", new Date(), metaObject);
-        this.setFieldValByName("updateBy", WebUtils.getUserIDFromSecurityContext(), metaObject);
+        this.setFieldValByName("updateBy", userId, metaObject);
+    }
+
+    private static Long getUserId() {
+        Long userId;
+        try {
+            userId = WebUtils.getUserIDFromSecurityContext();
+        } catch (Exception e) {
+            log.warn("获取ID失败, Fail to get User ID from Context: " + e.getMessage());
+            userId = -1L;    //表示非用户操作
+        }
+        return userId;
     }
 }
