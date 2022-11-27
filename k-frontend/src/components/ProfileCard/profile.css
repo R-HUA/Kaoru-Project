@@ -31,8 +31,8 @@
 
 .header-image{
     margin-top: -37px;
-    height: 100px;
     width: 100%;
+    padding-bottom: 16.667%;
     background-color: pink;
     background-size: contain;
     border-bottom-left-radius: 0;

@@ -3,7 +3,8 @@ import "./mainpage.css"
 import NavBar from "../NavBar";
 import Container from "../Container/container";
 import {Outlet} from "react-router-dom";
-import {Loading} from "element-react";
+import {Spin} from "antd";
+import { LoadingOutlined } from '@ant-design/icons';
 
 const MainPage = () => {
 	return (
@@ -19,7 +20,7 @@ const MainPage = () => {
 				*/
 			}
 			<Container>
-				<Suspense fallback={<Loading/>}>
+				<Suspense fallback={<Spin indicator={<LoadingOutlined style={{fontSize: 24, marginTop: "35%"}} spin/>} />}>
 					<Outlet />
 				</Suspense>
 			</Container>

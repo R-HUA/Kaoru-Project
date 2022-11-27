@@ -29,27 +29,28 @@
 
 @media screen and (min-width: 550px) and (max-width: 944px) {
     #main-container {
-        width: 85%;
+        width: 90%;
         display: flex;
         justify-content: center;
-        margin-left: 0;
+        margin-left: 5%;
     }
 
     #nav-box {
-        width: 15%;
+        width: 8%;
         justify-content: center;
     }
 }
 
 @media screen and (min-width: 945px) and (max-width: 1180px){
     #main-container {
-        width: 100%;
+        width: 85%;
         display: flex;
         justify-content: center;
+        margin-left: 8%;
     }
 
     #nav-box {
-        width: 8%;
+        width: 15%;
         justify-content: center;
     }
 }

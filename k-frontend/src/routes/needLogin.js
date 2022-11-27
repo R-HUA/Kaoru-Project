@@ -1,7 +1,8 @@
 import { lazy } from 'react';
 import {Navigate} from "react-router-dom";
-import NewArticle from "../components/NewArticle/NewArticle";
+import EditProfile from "../components/EditProfile/EditProfile";
 
+let NewArticle  =  lazy(() => import( "../components/NewArticle/NewArticle"));
 let Article  =  lazy(() => import("../components/Article/Article"));
 let Profile =  lazy(() => import("../components/ProfilePage/profilepage"));
 let MainPage = lazy(() => import("../components/MainPage"));
@@ -28,6 +29,10 @@ const noLogin = [
             {
                 path: 'article/new',
                 element: <NewArticle/>
+            },
+            {
+                path:'edit',
+                element:<EditProfile/>,
             },
             {
                 path: '*',

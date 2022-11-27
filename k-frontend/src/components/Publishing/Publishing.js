@@ -4,6 +4,7 @@ import {Button, Dialog, Dropdown, Input, Popover, Select, Upload} from "element-
 import {BiImage, BiVideo} from "react-icons/bi";
 import axios from "axios";
 import {UPLOAD_URL} from "../../constant/url";
+import Search from "antd/es/input/Search";
 
 
 export default function Publishing() {
@@ -55,6 +56,9 @@ export default function Publishing() {
         uploadRef.current.clearFiles();    // delete the uploaded files
     }
 
+    function onSearch(value, event){
+        console.log(value, event);
+    }
 
     return (
         <>
@@ -102,7 +106,8 @@ export default function Publishing() {
                     <div className="img-upload">
                         <Popover placement="bottom" width="339" trigger="click" content={(
                             <>
-                                <Input placeholder="Please enter video URL" append={<Button type="primary" icon="search"></Button>} />
+                                <Search placeholder="Please enter video URL" allowClear onSearch={onSearch} style={{ width: "100%" }} />
+
                                 <iframe
                                     style={{width: "100%"}}
                                     src="https://www.youtube.com/embed/"
@@ -115,8 +120,9 @@ export default function Publishing() {
                                 <iframe
                                     style={{width: "100%"}}
                                     src="//player.bilibili.com/player.html?bvid=BV1Pk4y1T7RJ&page=1"
-
-                                    allowFullScreen="true"></iframe>
+                                    title="bilibili video player"
+                                    allowFullScreen="true">
+                                </iframe>
 
                             </>
                         )}>
@@ -137,7 +143,7 @@ export default function Publishing() {
                         </Dropdown>
                     </div>
                     <button id="publishButton" onClick={publishing}>
-                        Publish
+                        Post
                     </button>
                 </div>
             </div>

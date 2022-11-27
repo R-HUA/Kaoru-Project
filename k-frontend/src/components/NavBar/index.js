@@ -7,6 +7,9 @@ import {RiContactsFill, RiContactsLine, RiFileList2Line} from "react-icons/ri";
 import {CgMoreAlt, CgMoreO} from "react-icons/cg";
 import SideCard from "../SideCard/SideCard";
 import {NavLink} from "react-router-dom";
+import {IoMdNotificationsOutline} from "react-icons/io";
+import {Popover} from "antd";
+import {RightOutlined} from "@ant-design/icons";
 
 function NavBar(props) {
     return (
@@ -36,11 +39,6 @@ function NavBar(props) {
                 </NavLink>
 
                 <button className = "row">
-                    <IoNotificationsOutline className ="home-icon"/>
-                    <p className ="nav-title">Notifications</p>
-                </button>
-
-                <button className = "row">
                     <BiMessageSquareDetail className ="home-icon"/>
                     <p className ="nav-title">Messages</p>
                 </button>
@@ -57,11 +55,30 @@ function NavBar(props) {
                     </button>
                 </NavLink>
 
-                <button className = "row">
-                    <CgMoreO className ="home-icon"/>
-                    <p className ="nav-title">More</p>
-                </button>
+                <Popover
+                    content={(
+                        <div style={{paddingTop: 8, paddingBottom: 5}}>
+                            <NavLink to="/article/new" className = "more-row">
+                                <p>Creat</p>
+                                <RightOutlined />
+                            </NavLink>
 
+                            <NavLink to="/edit" className = "more-row">
+                                <p>Setting</p>
+                                <RightOutlined />
+                            </NavLink>
+                        </div>
+                    )}
+                    arrow={false}
+                    autoAdjustOverflow={false}
+                    placement="bottom"
+                    getPopupContainer={(triggerNode) => (triggerNode.parentNode instanceof HTMLElement ? triggerNode.parentNode : document.body)}
+                    trigger="hover">
+                <button className = "row" >
+                    <CgMoreO className ="home-icon"/>
+                        <p className ="nav-title">More</p>
+                </button>
+                </Popover>
             </div>
             
         </div>

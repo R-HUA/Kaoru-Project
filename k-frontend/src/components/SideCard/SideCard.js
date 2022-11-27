@@ -15,7 +15,7 @@ function SideCard(props) {
 
                     <p className="user-name"> {userInfo.nickName} </p>
 
-                    <div className="user-desc"> {userInfo.email} </div>
+                    <div className="user-desc"> {userInfo.signature} </div>
 
                 </div>
 

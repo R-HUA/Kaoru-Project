@@ -3,6 +3,7 @@ import "./Feed.css";
 import Posts from "./posts/posts";
 import { BiArrowBack } from "react-icons/bi";
 import { CgMoreAlt, CgCalendarDates } from "react-icons/cg";
+import {Empty} from "antd";
 
 const Feed = () => {
 

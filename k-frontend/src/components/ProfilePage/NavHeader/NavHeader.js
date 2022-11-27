@@ -6,12 +6,12 @@ function NavHeader() {
         <>
             <div id="nav-header">
                 <div className="box-nav" >
-                    <p id="nav">Tweets</p>
+                    <p id="nav">Posts</p>
                     <div id="line"/>
                 </div>
 
                 <div className="box-nav" >
-                    <p id="nav"> Replies </p>
+                    <p id="nav">Articles</p>
                 </div>
 
                 <div className="box-nav" >
