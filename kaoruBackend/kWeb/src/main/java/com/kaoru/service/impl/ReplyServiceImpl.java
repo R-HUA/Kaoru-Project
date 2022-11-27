@@ -65,9 +65,12 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
                 && reply.getRepliedId() != null
                 && StringUtils.hasText(reply.getType())) {
 
-            save(reply);
+            boolean isSave = save(reply);
 
-            return ResponseResult.okResult();
+            if (isSave){
+                return ResponseResult.okResult();
+            }
+
         }
 
         throw new AppSystemException(CustomedHttpCodeEnum.SYSTEM_ERROR);

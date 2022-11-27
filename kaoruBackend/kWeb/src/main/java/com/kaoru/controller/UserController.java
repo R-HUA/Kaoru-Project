@@ -25,7 +25,7 @@ public class UserController {
 
 
         if (user != null && StringUtils.hasText(user.getUserName()) ){
-            return userService.login(user);
+            return userService.needInfoLogin(user);
         }
 
         throw new AppSystemException(CustomedHttpCodeEnum.REQUIRE_USERNAME);

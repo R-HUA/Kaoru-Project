@@ -18,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 针对表【t_user(用户表)】的数据库操作Service实现
  * @author H
@@ -33,8 +36,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public ResponseResult login(User user) {
+
+    public ResponseResult login(User user, Boolean isNeedInfo) {
 
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
@@ -42,11 +45,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LoginUserDetails loginUser = (LoginUserDetails) authenticate.getPrincipal();
         String uid = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(uid);
-        redisCache.setCacheObject("login:"+ uid, loginUser);
 
-        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
 
-        return ResponseResult.okResult(new LoginVo(jwt,userInfoVo));
+        if (isNeedInfo){
+            redisCache.setCacheObject("login:"+ uid, loginUser);
+            UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
+            return ResponseResult.okResult(new LoginVo(jwt,userInfoVo));
+        }
+        else {
+            Map<String,String> jwtmap = new HashMap<>();
+            jwtmap.put("token",jwt);
+
+            redisCache.setCacheObject("AdminLogin:"+ uid, loginUser);
+            return ResponseResult.okResult(jwtmap);
+        }
+
+
+    }
+
+    @Override
+    public ResponseResult needInfoLogin(User user) {
+        return login(user,true);
+    }
+
+    @Override
+    public ResponseResult adminLogin(User user) {
+        return login(user,false);
     }
 
     @Override

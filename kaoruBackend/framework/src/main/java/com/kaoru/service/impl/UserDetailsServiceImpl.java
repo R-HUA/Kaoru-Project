@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         queryWrapper.eq(User::getUserName, username);
         User user = userMapper.selectOne(queryWrapper);
         if (Objects.isNull(user)){
-            throw new UsernameNotFoundException("用户名不存在");
+            throw new UsernameNotFoundException("Username does not exist");
         }
         return new LoginUserDetails(user);
     }

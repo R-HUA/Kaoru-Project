@@ -8,12 +8,12 @@ public interface ArticleService extends IService<Article> {
 
     /**
      * Paging query article list
-     * @param page current page
+     * @param pageNum current page
      * @param pageSize page size
      * @param categoryId category id
      * @return ResponseResult JSON data
      */
-    ResponseResult  articleList(Integer page, Integer pageSize, Long categoryId);
+    ResponseResult  articleList(Integer pageNum, Integer pageSize, Long categoryId);
 
 
     /**

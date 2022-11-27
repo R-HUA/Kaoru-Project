@@ -14,7 +14,9 @@ public interface UserService extends IService<User> {
      * @param user User
      * @return LoginVo
      */
-    ResponseResult login(User user);
+    ResponseResult needInfoLogin(User user);
+
+    ResponseResult adminLogin(User user);
 
     ResponseResult logout();
 

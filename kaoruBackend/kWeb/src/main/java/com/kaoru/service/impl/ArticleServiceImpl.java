@@ -27,9 +27,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private RedisCache redisCache;
 
     @Override
-    public ResponseResult articleList(Integer page, Integer pageSize, Long categoryId) {
+    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
 
-        page = (page < 1) ? 1 : page;
+        pageNum = (pageNum < 1) ? 1 : pageNum;
         pageSize = Optional.ofNullable(pageSize).orElse(10);
 
         // condition
@@ -44,7 +44,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
 
         // paging query
-        Page<Article> articlePage = new Page<>(page, pageSize);
+        Page<Article> articlePage = new Page<>(pageNum, pageSize);
         page(articlePage, queryWrapper);
 
         List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articlePage.getRecords(), ArticleListVo.class);
