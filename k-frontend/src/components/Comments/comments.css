@@ -1,0 +1,14 @@
+.comment-loadmore{
+    position: relative;
+    border-top: 1px solid rgb(229, 233, 239);
+    overflow: hidden;
+    padding: 12px 0 5px;
+    color: rgb(153, 162, 170);
+    text-align: center;
+    margin: 1vw 0 -1vw;
+    cursor: pointer;
+}
+
+.comment-loadmore:hover{
+    color: rgb(0, 0, 0);
+}

@@ -15,12 +15,14 @@ import com.kaoru.utils.ResponseResult;
 import com.kaoru.utils.WebUtils;
 import com.kaoru.vo.PageVO;
 import com.kaoru.vo.PostVo;
+import com.kaoru.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.kaoru.AppConstants.POST_STATUS_NORMAL;
 
@@ -36,17 +38,32 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Autowired
     private FollowService followService;
 
+    @Autowired
+    private PostMapper postMapper;
+
     @Override
     public ResponseResult getPostContent(Long id) {
         LambdaQueryWrapper<Post> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Post::getId, id);
         wrapper.eq(Post::getStatus, POST_STATUS_NORMAL);
         Post post = getOne(wrapper);
+        //Post post = postMapper.selectPostById(id);
+
+        if (post.getRepostId() != null) {
+            Post repost = getById(post.getRepostId());
+            if (repost != null && repost.getStatus().equals(POST_STATUS_NORMAL)) {
+                post.setRepost(repost);
+            }
+        }
 
         PostVo postVo = BeanCopyUtils.copyBean(post, PostVo.class);
 
+
+
+
         try {
             postVo.setViewCount(((Integer)redisCache.getCacheMapValue("post:viewCounts", String.valueOf(id))).longValue());
+            updateViewCount(id);
         } catch (Exception e) {
             log.error("Get view count of post from redis failed: " + e.getMessage());
         }
@@ -55,11 +72,20 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
+    public Boolean updateViewCount(Long id){
+        redisCache.incrementCacheMapValue("post:viewCounts", String.valueOf(id), 1);
+        return true;
+    }
+
+    @Override
     public ResponseResult newPost(Post post) {
-        if (StringUtils.hasText(post.getContent())){
+        if (post.hasContent() && post.getContent().length() <= 500){
             boolean isSave = save(post);
+
             if (isSave){
-                return ResponseResult.okResult();
+                // return the added post
+                PostVo postVo = BeanCopyUtils.copyBean(post, PostVo.class);
+                return ResponseResult.okResult(postVo);
             }
         }
 
@@ -81,10 +107,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         throw new AppSystemException(CustomedHttpCodeEnum.SYSTEM_ERROR);
     }
 
-    private ResponseResult getPostListPage(Integer pageNum, Integer pageSize, LambdaQueryWrapper<Post> wrapper) {
+    private ResponseResult getPostListPage(Integer pageNum, Integer pageSize, LambdaQueryWrapper<Post> wrapper, Map<Long,UserInfoVo> usersMap) {
+
 
         // Validate pageNum and pageSize
-        pageNum = (pageNum < 1) ? 1 : pageNum;
+        pageNum = (pageNum != null && pageNum > 0) ? pageNum : 1;
         pageSize = Optional.ofNullable(pageSize).orElse(10);
 
         // Order
@@ -95,8 +122,15 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Page<Post> postPage = new Page<>(pageNum, pageSize);
         this.page(postPage, wrapper);
         List<Post> thisPage = postPage.getRecords();
-
         List<PostVo> postVos = BeanCopyUtils.copyBeanList(thisPage, PostVo.class);
+
+        // TODO: set view count
+
+        if (usersMap != null) {
+            postVos.forEach(postVo -> {
+                postVo.setPoster(usersMap.get(postVo.getCreateBy()));
+            });
+        }
 
         return ResponseResult.okResult(new PageVO(postVos, postPage.getTotal()));
     }
@@ -110,7 +144,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         wrapper.eq(Post::getStatus, POST_STATUS_NORMAL);
 
 
-        return getPostListPage(pageNum, pageSize, wrapper);
+        return getPostListPage(pageNum, pageSize, wrapper, null);
 
     }
 
@@ -119,13 +153,23 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
         Long id = WebUtils.getUserIDFromSecurityContext();
 
-        List<Long> followingList = followService.getFollowingList(id);
+        List<UserInfoVo> followingUserList = followService.getFollowingUserList(id);
+
+        if (followingUserList.isEmpty()){
+            return ResponseResult.okResult(new PageVO(null,0L));
+        }
+
+        Map<Long, UserInfoVo> followingUserMap = followingUserList.stream()
+                .collect(Collectors.toMap(UserInfoVo::getId, userInfoVo -> userInfoVo));
+
+
 
         LambdaQueryWrapper<Post> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Post::getStatus, POST_STATUS_NORMAL);
-        wrapper.in(Post::getCreateBy, followingList);
+        wrapper.in(Post::getCreateBy, followingUserMap.keySet());
 
-        return getPostListPage(pageNum, pageSize, wrapper);
+
+        return getPostListPage(pageNum, pageSize, wrapper,followingUserMap);
     }
 }
 

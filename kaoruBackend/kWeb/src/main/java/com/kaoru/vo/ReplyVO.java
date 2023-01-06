@@ -66,6 +66,8 @@ public class ReplyVO {
      */
     private String username;
 
+    private String userAvatar;
+
     /**
      *
      */
