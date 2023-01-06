@@ -1,6 +1,7 @@
 package com.kaoru.controller;
 
 import com.kaoru.annotation.AppLog;
+import com.kaoru.annotation.PreventDuplicate;
 import com.kaoru.enmus.CustomedHttpCodeEnum;
 import com.kaoru.exception.AppSystemException;
 import com.kaoru.pojo.User;
@@ -9,6 +10,7 @@ import com.kaoru.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * UserController
@@ -19,6 +21,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    /**
+     * 用户登录
+     *
+     * @return 包含LoginVo的结果
+     */
+    @PreventDuplicate
     @AppLog
     @PostMapping("/login")
     public ResponseResult login(@RequestBody User user){
@@ -31,20 +40,33 @@ public class UserController {
         throw new AppSystemException(CustomedHttpCodeEnum.REQUIRE_USERNAME);
     }
 
+    /**
+     * 用户登出
+     * 删除redis中的token
+     */
     @AppLog
     @PostMapping("/logout")
     public ResponseResult logout(){
         return userService.logout();
     }
 
+    @PreventDuplicate
     @AppLog
     @GetMapping("/user")
-    public ResponseResult getUserInfo(){
+    public ResponseResult getCurrentUserInfo(){
         return userService.getUserInfo();
     }
 
+    @PreventDuplicate
     @AppLog
-    @PutMapping("/user")
+    @GetMapping("/user/{id}")
+    public ResponseResult getUserInfoById(@PathVariable("id") Long id){
+        return ResponseResult.okResult(userService.getUserInfoById(id));
+    }
+
+    @PreventDuplicate
+    @AppLog
+    @PutMapping("/userInfo")
     public ResponseResult updateUserInfo(@RequestBody User user){
         return userService.updateUserInfo(user);
     }
@@ -54,4 +76,25 @@ public class UserController {
     public ResponseResult register(@RequestBody User user){
         return userService.register(user);
     }
+
+
+    /**
+     * 更新用户信息
+     *
+     * @return 更新后的用户信息
+     */
+    @PreventDuplicate
+    @AppLog
+    @PutMapping("/user")
+    public ResponseResult updateUser(
+            @RequestParam(name = "avatar", required = false) MultipartFile avatar,
+            @RequestParam(name = "header", required = false) MultipartFile header,
+            @RequestParam(name = "nickName", required = false) String nickName,
+            @RequestParam(name = "signature", required = false) String signature,
+            @RequestParam(name = "email", required = false) String email,
+            @RequestParam(name = "phone",required = false) String phone){
+
+        return userService.updateUserAndUpload(avatar,header,nickName,signature,email,phone);
+    }
+
 }

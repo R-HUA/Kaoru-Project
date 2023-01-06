@@ -5,6 +5,7 @@ import com.kaoru.pojo.Follow;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.kaoru.pojo.User;
 import com.kaoru.utils.ResponseResult;
+import com.kaoru.vo.UserInfoVo;
 
 import java.util.List;
 
@@ -18,8 +19,11 @@ public interface FollowService extends IService<Follow> {
     List<Long> getFollowerList(Long id);
 
 
-    ResponseResult getFollowingUserList(Long id);
+    List<UserInfoVo> getFollowingUserList(Long id);
 
     ResponseResult getFollowerUserList(Long id);
 
+    ResponseResult addFollow(Long followeeId);
+
+    ResponseResult deleteFollow(Long followeeId);
 }

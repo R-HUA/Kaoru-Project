@@ -9,6 +9,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticleDetailsVo {
+
     private Long id;
     //标题
     private String title;
@@ -19,8 +20,17 @@ public class ArticleDetailsVo {
     //所属分类id
     private Long categoryId;
 
+    private String thumbnail;
+
     //访问量
     private Long viewCount;
 
+    private Long commentCount;
+
+    private Long createBy;
+
+    private UserInfoVo poster;
+
     private Date createTime;
+
 }

@@ -14,6 +14,10 @@ public class AppConstants {
 
     public static final String REPLY_TYPE_ARTICLE = "0";
 
+    public static final String REPLY_TYPE_POST = "1";
+
+    public static final String REPLY_STATUS_NORMAL = "0";
+
     public static final String BLOB_CONTAINER_NAME = "rhuablob";
 
     public static final String POST_STATUS_NORMAL = "0";

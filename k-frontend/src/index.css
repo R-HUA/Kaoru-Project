@@ -16,3 +16,22 @@ code {
   monospace;
 }
 
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(217,217,227,.8);
+  border-radius: 9999px;
+  border-width: 1px;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(210,210,220);
+}
+

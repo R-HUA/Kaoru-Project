@@ -1,0 +1,10 @@
+.follow-button--follow{
+    background-color: #f6f9fb;
+    color: #000000A6;
+    text-align: center;
+    padding-inline: inherit !important;
+}
+
+.follow-button--follow:hover{
+    background-color: #8592a3 !important;
+}

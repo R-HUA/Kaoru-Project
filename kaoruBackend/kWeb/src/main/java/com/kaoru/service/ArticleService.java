@@ -8,12 +8,14 @@ public interface ArticleService extends IService<Article> {
 
     /**
      * Paging query article list
+     *
+     * @param userId user id
      * @param pageNum current page
      * @param pageSize page size
      * @param categoryId category id
      * @return ResponseResult JSON data
      */
-    ResponseResult  articleList(Integer pageNum, Integer pageSize, Long categoryId);
+    ResponseResult  articleList(Long userId, Integer pageNum, Integer pageSize, Long categoryId);
 
 
     /**
@@ -28,5 +30,7 @@ public interface ArticleService extends IService<Article> {
      * @param id article id
      * @return ResponseResult JSON data
      */
-    ResponseResult updateArticleViewCount(Long id);
+    Boolean updateArticleViewCount(Long id);
+
+    ResponseResult flowingArticleList(Integer page, Integer pageSize);
 }

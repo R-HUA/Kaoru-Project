@@ -13,6 +13,8 @@ public interface PostService extends IService<Post> {
 
     ResponseResult getPostContent(Long id);
 
+    Boolean updateViewCount(Long id);
+
     ResponseResult newPost(Post post);
 
     ResponseResult deletePost(Long id);

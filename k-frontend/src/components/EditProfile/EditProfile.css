@@ -26,7 +26,8 @@
     width: 100%;
     padding-bottom: 16.667%;
     background-color: pink;
-    background-size: contain;
+    background-size: cover;
+    background-position: center;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
@@ -53,7 +54,7 @@
 
 }
 
-.root {
+.upload-root {
     font-size: inherit;
     font-weight: inherit;
     outline: none;
@@ -62,7 +63,7 @@
 }
 
 
-.root .ant-upload-wrapper{
+.upload-root .ant-upload-wrapper{
     padding-bottom: 100% !important;
 }
 

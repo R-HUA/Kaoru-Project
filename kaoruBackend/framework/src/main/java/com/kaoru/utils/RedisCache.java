@@ -45,7 +45,7 @@ public class RedisCache
      * 设置有效时间
      *
      * @param key Redis键
-     * @param timeout 超时时间
+     * @param timeout 超时时间 SECONDS
      * @return true=设置成功；false=设置失败
      */
     public boolean expire(final String key, final long timeout)

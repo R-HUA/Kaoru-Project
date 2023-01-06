@@ -28,7 +28,7 @@ function Login(props) {
 
     const openNotification = (title,msg) => {
         notification.open({
-            placement: 'top',
+            placement: 'topRight',
             message: title,
             description: msg,
             onClick: () => {
@@ -81,7 +81,7 @@ function Login(props) {
                 dispatch({type: 'LOADED'})
             }
         }).catch(e => {
-            openNotification('Network Error', e.message);
+            openNotification('Network Error', null);
             dispatch({type: 'LOADED'})
         })
     }

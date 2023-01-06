@@ -24,6 +24,10 @@ public class ArticleListVo {
     //访问量
     private Long viewCount;
 
+    private Long createBy;
+
+    private UserInfoVo poster;
+
     private Date createTime;
 
 

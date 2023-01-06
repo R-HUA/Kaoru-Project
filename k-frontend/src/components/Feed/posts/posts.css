@@ -44,6 +44,7 @@
     font-weight: 500;
     line-height: 16px;
     color: #bdbdbd;
+    cursor: default;
 }
 
 .post-content {
@@ -53,7 +54,7 @@
     color: #4f4f4f;
     padding-left: 52px;
     padding-right: 52px;
-    margin-bottom: 16px;
+    margin-bottom: -10px;
     text-decoration: none;
     cursor: default;
 }
@@ -61,49 +62,51 @@
 .postImageContainerSingle {
     width: 100%;
     height: 30vh;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding: 0 0.4vw 0 50px;
+    margin-top: 26px;
     margin-bottom: 12px;
 }
+
 
 .postImageContainer {
     width: 100%;
     display: flex;
     justify-content: left;
     flex-direction: row;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding: 0 0.4vw 0 50px;
+    margin-top: 26px;
     margin-bottom: 12px;
 }
 
-.postImageSingle {
+.postImageContainerSingle .ant-image {
     width: auto;
     height: 100%;
-    object-fit: scale-down;
     border-radius: 8px;
+    object-fit: scale-down;
     object-position: left;
 }
 
-
-/*.postImage {
-    width: 15vw;
-    height: 15vw;
+.postImageContainerSingle .ant-image-img{
     border-radius: 8px;
-    margin-right: 8px;
+    object-fit: scale-down !important;
     object-position: left;
-}*/
+    height: 100% !important;
+}
 
 .postImageContainer .ant-image{
     margin-right: 8px;
+    width: 181px;
+    height: 181px;
 }
 
-.postImageContainer .ant-image-mask{
+.ant-image-mask{
     border-radius: 8px;
 }
 
 .postImageContainer .ant-image-img{
     border-radius: 8px;
     object-fit: cover !important;
+    height: 100% !important;
 }
 
 .postImage:hover {
@@ -117,14 +120,13 @@
     align-items: flex-start;
 }
 
-a.engageLink {
+div.engageLink {
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-family: Noto Sans;
     font-size: 14px;
     font-weight: 500;
-    line-height: 19px;
     color: #5e5e5e;
     padding: 8px 8px 0 0;
     cursor: pointer;
@@ -203,5 +205,11 @@ span.engageLink {
 
     .engageLinks{
         padding: 0 0 0 4px;
+    }
+
+    .postImageContainer .ant-image{
+        margin-right: 4px;
+        width: 160px;
+        height: 160px;
     }
 }

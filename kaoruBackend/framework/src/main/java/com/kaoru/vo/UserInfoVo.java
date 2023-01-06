@@ -15,6 +15,12 @@ public class UserInfoVo {
 
     private String sex;
 
+    private String description;
+
+    private String headerImg;
+
     private String email;
+
+    private String phoneNumber;
 
 }

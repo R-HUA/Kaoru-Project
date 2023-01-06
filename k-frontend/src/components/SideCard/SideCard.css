@@ -33,6 +33,10 @@
     color: #5e5e5e;
 }
 
+.author-container{
+    cursor: default;
+}
+
 
 @media screen and (min-width: 550px) and (max-width: 1180px) {
 

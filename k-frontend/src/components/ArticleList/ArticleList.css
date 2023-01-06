@@ -1,0 +1,132 @@
+.articlelist-container{
+    width: 75%;
+    margin: 22px 0 30px 5%;
+}
+
+.card-username-link{
+    color: #18191c;
+}
+
+
+.article-card-desc a{
+    color: #18191c !important;
+}
+
+.article-card-desc h2{
+    max-height: 26px;
+    font-size: 18px;
+    color: #222;
+    line-height: 26px;
+    overflow: hidden;
+    display: block;
+}
+
+.article-list-time{
+    margin-top: -8px;
+    margin-bottom: 8px;
+    color: #99a2aa;
+    font-size: 12px;
+    height: 22px;
+    line-height: 22px;
+    transition: color .3s ease;
+}
+
+.article-card-desc p{
+    font-size: 14px;
+    color: #6d757a;
+    line-height: 22px;
+    margin-top: 5px;
+    cursor: default;
+}
+
+.articlelist-more{
+    margin-top: 0.5em;
+    color: #178bcf;
+    cursor: pointer;
+}
+
+.article-image-container{
+    margin-top: 12px;
+    width: 50%;
+    max-height: 55vh;
+}
+
+.article-image-container-horizontal{
+    margin-top: 12px;
+    width: 100%;
+    height: 30vh;
+}
+
+.article-image-container-horizontal img{
+    max-width: 100%;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.article-image-container img{
+    max-width: 100%;
+    max-height: 55vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+
+div.engageLink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: Noto Sans;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19px;
+    color: #5e5e5e;
+    padding: 8px 8px 0 0;
+    cursor: pointer;
+}
+
+span.engageLink {
+    margin-right: 8px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.engageLink p{
+    margin: 0;
+}
+
+
+.tcolors-bg{
+    position: relative;
+    border-top: 1px solid rgb(229, 233, 239);
+    overflow: hidden;
+    padding: 12px 0 5px;
+    color: rgba(153, 162, 170, 0.5);
+    text-align: center;
+    margin: 2vw 0 -2vw;
+    cursor: default;
+}
+
+
+@media (max-width: 1180px) {
+    .articlelist-container {
+        width: 90%;
+        margin: 20px 0 0;
+    }
+}
+
+@media (max-width: 930px) {
+    .articlelist-container {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+
+.profile-page .articlelist-container{
+    width: 100%;
+    margin: 0;
+}

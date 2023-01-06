@@ -1,35 +1,46 @@
 import React from 'react';
 import "./navbar.css";
-import {FaTwitter} from "react-icons/fa";
-import {BiBookmark, BiHash, BiHomeCircle, BiMessageSquareDetail,} from "react-icons/bi";
-import {IoNotificationsOutline} from "react-icons/io5";
-import {RiContactsFill, RiContactsLine, RiFileList2Line} from "react-icons/ri";
-import {CgMoreAlt, CgMoreO} from "react-icons/cg";
+import {
+    BiBookmark,
+    BiCollection,
+    BiBookmarkAlt,
+    BiHomeAlt,
+    BiMessageDots,
+    BiDotsHorizontalRounded, BiDotsVerticalRounded, BiUserCircle
+} from "react-icons/bi";
+import {RiContactsLine, RiFileList2Line} from "react-icons/ri";
+import {CgMoreO} from "react-icons/cg";
 import SideCard from "../SideCard/SideCard";
 import {NavLink} from "react-router-dom";
-import {IoMdNotificationsOutline} from "react-icons/io";
 import {Popover} from "antd";
 import {RightOutlined} from "@ant-design/icons";
+import {useSelector} from "react-redux";
 
 function NavBar(props) {
+
+    const userInfo = useSelector(state => state.user);
+
+
+
     return (
         <div id="container-nav">
             <div id="nav-up">
-
 
                 <SideCard/>
 
                 <NavLink to="/">
                     <button className = "row">
-                        <BiHomeCircle className ="home-icon"/>
+                        <BiHomeAlt className ="home-icon"/>
                         <p className ="nav-title">Home</p>
                     </button>
                 </NavLink>
 
-                <button className = "row">
-                    <BiHash className ="home-icon"/>
-                    <p className ="nav-title">Explore</p>
-                </button>
+                <NavLink to="/moment">
+                    <button className = "row">
+                        <BiCollection className ="home-icon"/>
+                        <p className ="nav-title">Moment</p>
+                    </button>
+                </NavLink>
 
                 <NavLink to="/article">
                     <button className = "row">
@@ -39,18 +50,18 @@ function NavBar(props) {
                 </NavLink>
 
                 <button className = "row">
-                    <BiMessageSquareDetail className ="home-icon"/>
-                    <p className ="nav-title">Messages</p>
+                    <BiMessageDots className ="home-icon"/>
+                    <p className ="nav-title">Message</p>
                 </button>
 
                 <button className = "row">
                     <BiBookmark className ="home-icon"/>
-                    <p className ="nav-title">Bookmarks</p>
+                    <p className ="nav-title">Bookmark</p>
                 </button>
 
-                <NavLink to="/profile">
+                <NavLink to={"/userinfo/" + userInfo.id}>
                     <button className = "row">
-                        <RiContactsLine className ="home-icon"/>
+                        <BiUserCircle className ="home-icon"/>
                         <p className="nav-title">Profile</p>
                     </button>
                 </NavLink>
@@ -63,8 +74,13 @@ function NavBar(props) {
                                 <RightOutlined />
                             </NavLink>
 
-                            <NavLink to="/edit" className = "more-row">
+                            <NavLink to="/setting" className = "more-row">
                                 <p>Setting</p>
+                                <RightOutlined />
+                            </NavLink>
+
+                            <NavLink to="/logout" className = "more-row">
+                                <p>Log out</p>
                                 <RightOutlined />
                             </NavLink>
                         </div>
@@ -75,7 +91,7 @@ function NavBar(props) {
                     getPopupContainer={(triggerNode) => (triggerNode.parentNode instanceof HTMLElement ? triggerNode.parentNode : document.body)}
                     trigger="hover">
                 <button className = "row" >
-                    <CgMoreO className ="home-icon"/>
+                    <BiDotsVerticalRounded className ="home-icon"/>
                         <p className ="nav-title">More</p>
                 </button>
                 </Popover>

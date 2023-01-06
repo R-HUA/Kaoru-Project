@@ -22,7 +22,7 @@ public class SaveViewCount {
     @Autowired
     private ArticleService articleService;
 
-    @Scheduled( cron = "0 0/20 * * * ?")
+    @Scheduled( cron = "0 0/50 * * * ?")
     public void saveViewCount(){
         Map<String, Integer> viewCountMap = redisCache.getCacheMap("article:viewCounts");
 

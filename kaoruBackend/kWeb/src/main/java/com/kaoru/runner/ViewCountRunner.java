@@ -3,6 +3,7 @@ package com.kaoru.runner;
 import com.kaoru.mapper.ArticleMapper;
 import com.kaoru.pojo.Article;
 import com.kaoru.service.ArticleService;
+import com.kaoru.service.PostService;
 import com.kaoru.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -24,6 +25,9 @@ public class ViewCountRunner implements CommandLineRunner {
     private ArticleMapper articleMapper;
 
     @Autowired
+    private PostService postService;
+
+    @Autowired
     private RedisCache redisCache;
 
     @Override
@@ -31,6 +35,8 @@ public class ViewCountRunner implements CommandLineRunner {
         List<Article> articles = articleMapper.selectList(null);
         Map<String, Integer> viewMap = articles.stream().collect(Collectors.toMap(e -> String.valueOf(e.getId()), e -> Math.toIntExact(e.getViewCount())));
         redisCache.setCacheMap("article:viewCounts",viewMap);
+
+
 
     }
 }

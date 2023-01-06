@@ -32,6 +32,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         // get token from header
         String token = request.getHeader("token");
+        String result = null;
 
         // if token is null, do nothing
         if (token == null) {
@@ -51,11 +52,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         } catch (Exception e) {
             logger.warn(e.getMessage());
+            result = JSON.toJSONString(ResponseResult.errorResult(CustomedHttpCodeEnum.SYSTEM_ERROR, e.getMessage()));
+            WebUtils.renderString(response, result);
         }
 
         // if token is invalid, return error message in body to client
         // (HTTP Status is 200, It is just a customized error message for client)
-        String result = JSON.toJSONString(ResponseResult.errorResult(CustomedHttpCodeEnum.NEED_LOGIN));
+        result = JSON.toJSONString(ResponseResult.errorResult(CustomedHttpCodeEnum.NEED_LOGIN));
+
+
+
         WebUtils.renderString(response, result);
     }
 }

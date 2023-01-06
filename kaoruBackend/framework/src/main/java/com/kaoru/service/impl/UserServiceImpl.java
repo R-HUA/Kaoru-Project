@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kaoru.enmus.CustomedHttpCodeEnum;
 import com.kaoru.exception.AppSystemException;
 import com.kaoru.pojo.User;
+import com.kaoru.service.FileService;
 import com.kaoru.service.UserService;
 import com.kaoru.mapper.UserMapper;
 import com.kaoru.utils.*;
@@ -17,13 +18,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 针对表【t_user(用户表)】的数据库操作Service实现
- * @author H
+ *
 */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService{
@@ -35,6 +37,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FileService blobFileService;
 
 
     public ResponseResult login(User user, Boolean isNeedInfo) {
@@ -59,8 +64,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             redisCache.setCacheObject("AdminLogin:"+ uid, loginUser);
             return ResponseResult.okResult(jwtmap);
         }
-
-
     }
 
     @Override
@@ -96,6 +99,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LoginUserDetails loginUser = redisCache.getCacheObject("login:" + id);
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
         return ResponseResult.okResult(userInfoVo);
+    }
+
+    @Override
+    public UserInfoVo getUserInfoById(Long id) {
+        User user = getById(id);
+        if (user == null){
+            throw new AppSystemException(CustomedHttpCodeEnum.SYSTEM_ERROR.getCode(),"User not found");
+        }
+        return BeanCopyUtils.copyBean(user, UserInfoVo.class);
     }
 
 
@@ -138,6 +150,54 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         save(user);
 
         return ResponseResult.okResult();
+    }
+
+
+    /**
+     * Update user info and upload avatar and header image.
+     *
+     * @return the updated user info
+     */
+    @Override
+    public ResponseResult updateUserAndUpload(MultipartFile avatar, MultipartFile header, String nickName, String signature, String email, String phone) {
+
+        User user = new User()
+                .setNickName(nickName)
+                .setDescription(signature)
+                .setEmail(email)
+                .setPhoneNumber(phone)
+                .setId(WebUtils.getUserIDFromSecurityContext());
+
+        if (avatar != null && !avatar.isEmpty()){
+            String avatarURL = blobFileService.writeResource(avatar.getOriginalFilename(), avatar);
+            user.setAvatar(avatarURL);
+        }
+        else{
+            log.warn("Update User Info: avatar is empty");
+        }
+
+        if (header != null && !header.isEmpty()){
+            String headerURL = blobFileService.writeResource(header.getOriginalFilename(), header);
+            user.setHeaderImg(headerURL);
+            log.warn("Update User Info: header image is empty");
+        }
+        else{
+            log.warn("Update User Info: header image is empty");
+        }
+
+
+
+        // update and return the updated user info
+        boolean result = this.updateById(user);
+        if (result){
+
+            LoginUserDetails loginUser = redisCache.getCacheObject("login:" + user.getId());
+            loginUser.setUser(this.getById(user.getId()));
+            redisCache.setCacheObject("login:" + user.getId(), loginUser);
+            return getUserInfo();
+        }
+
+        throw new AppSystemException(CustomedHttpCodeEnum.SYSTEM_ERROR);
     }
 
 

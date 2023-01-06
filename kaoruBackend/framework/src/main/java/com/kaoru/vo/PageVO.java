@@ -15,4 +15,14 @@ public class PageVO {
 
     // 总条数
     private Long total;
+
+    // 总页数
+    private Long pages;
+
+
+    public PageVO(List rows, Long total) {
+        this.rows = rows;
+        this.total = total;
+    }
+
 }

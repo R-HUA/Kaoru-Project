@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 用户表
@@ -12,6 +13,7 @@ import lombok.Data;
  */
 @TableName(value ="t_user")
 @Data
+@Accessors(chain = true)
 public class User implements Serializable {
     /**
      * 主键
@@ -69,6 +71,12 @@ public class User implements Serializable {
      */
     private String avatar;
 
+
+    /**
+     * 头图
+     */
+    private String headerImg;
+
     /**
      * 创建人的用户id
      */
@@ -97,6 +105,7 @@ public class User implements Serializable {
      * 删除标志（0代表未删除，1代表已删除）
      */
     private Integer delFlag;
+
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

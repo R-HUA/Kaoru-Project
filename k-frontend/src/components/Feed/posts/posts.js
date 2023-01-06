@@ -1,21 +1,72 @@
 import React, {useEffect} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import "./posts.css";
 import {LiaComment} from "react-icons/lia";
 import {PiShare} from "react-icons/pi";
 import { Image } from 'antd';
 import {TbHeart,TbHeartFilled} from "react-icons/tb";
+import {formatTime} from "../../../constant/times";
+import axios from "axios";
+import {UPDATE_POST_VIEW_URL} from "../../../constant/url";
+
+
+export const PostImageArea = (props) => {
+    const [imageClass, setImageClass] = React.useState("postImageContainer");
+
+
+    // set style of image container based on number of images
+    useEffect(() => {
+        let imageCount = 0;
+        for (let i = 0; i < props.images.length; i++) {
+            if(props.images[i]){
+                imageCount++;
+            }
+        }
+
+
+        switch (imageCount) {
+            case 0:
+                return null;
+            case 1:
+                setImageClass( "postImageContainerSingle");
+                break;
+            default:
+                setImageClass( "postImageContainer");
+
+        }
+    }, []);
+
+
+    return (
+        <div className={imageClass}>
+            <Image.PreviewGroup >
+                {props.images.map((item, index) => (
+                    item ?
+                        <Image
+                            key={index}
+                            src={item}
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                        : null
+                ))}
+            </ Image.PreviewGroup>
+        </div>
+    );
+
+}
+
 
 function Posts(props) {
 
     const [like, setLike] = React.useState(false);
 
-    const [st, setSt] = React.useState(false);
+    const paramsId = useParams().id;
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
-        // 在组件渲染完成后执行的操作
-
+        // remove the text in the image mask after the component is mounted
         let maskInfoElements = document.getElementsByClassName("ant-image-mask-info");
 
         Array.from(maskInfoElements).forEach((element) => {
@@ -25,78 +76,84 @@ function Posts(props) {
     }, []);
 
 
+    const toDetial = () => {
+        if (props.saveScoll && props.setOpen) {
 
+            // update post viewCount
+            axios.put(
+                UPDATE_POST_VIEW_URL(props.id),
+                {},
+                {
+                    headers: { "token": localStorage.getItem("token") }
+                }
+            ).then(response => {
+                console.log("Updated post view count (" + response.data.code+ ")");
+            }).catch(error => {
+                console.log(error);
+            });
 
+            // save scroll position and open the post detail page
+            props.saveScoll([window.scrollX,window.scrollY]);
+            props.setOpen(props.id)
 
-
-
-
+            navigate(`/moment/${props.id}`);
+        }
+    }
 
 
 
     return (
-        <article className="post">
-            <header className="postingDetails">
-                <img className="posterImage" src="https://avatars.githubusercontent.com/u/50871883?v=4" alt="ProfileCard"/>
+        <article className="post"  onClick={toDetial}>
+            <div className="postingDetails" onClick={(e) => e.stopPropagation()}>
+                <Link to={`/profile/${props.poster.id}`}>
+                    <img className="posterImage" src={props.poster.avatar} alt="Poster"/>
+                </Link>
                 <div className="post-info">
                     <Link
-                        to={`/profile/tweets/`}
+                        to={`/profile/${props.poster.id}`}
                         className="posterName">
-                        {"username"}
+                        {props.poster.nickName}
                     </Link>
                     <p className="postingDate">
-                        {"13 Jun"}
+                        {paramsId ? props.postTime :formatTime(props.postTime)}
                     </p>
                 </div>
-            </header>
-            <Link className="post-content" to={` `}>
-                {"Acceptable file types can be specified with the accept attribute, which takes a comma-separated list of allowed file extensions or MIME types. Some examples:\n" +
-                    "\n" +
-                    "accept=\"image/png\" or accept=\".png\" — Accepts PNG files.\n" +
-                    "accept=\"image/png, image/jpeg\" or accept=\".png, .jpg, .jpeg\" — Accept PNG or JPEG files."}
-            </Link>
-{/*            <div className="postImageContainer">
-                <div  className="postImage">
-                    <img src={"https://pbs.twimg.com/media/FziTsdeacAA2XtM?format=jpg&name=4096x4096"}/>
-                </div>
-                <div  className="postImage">
-                    <img src={"https://avatars.githubusercontent.com/u/50871883?v=4"}/>
-                </div>
-            </div>*/}
-            <div className="postImageContainer">
-            <Image.PreviewGroup
-                preview={{
-                    onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
-                }}>
-                <Image height={181} width={181}  src="https://pbs.twimg.com/media/FziTsdeacAA2XtM?format=jpg&name=4096x4096" />
-                <Image
-                    width={181}
-                    src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"
-                />
-                <Image height={181} width={181}  src="https://pbs.twimg.com/media/FziTsdeacAA2XtM?format=jpg&name=4096x4096" />
-
-            </Image.PreviewGroup>
+            </div>
+            <div className="post-content">
+                {props.content}
             </div>
 
-            <div className="engageLinks">
-                <a className="engageLink">
+            {/* <div className="postImageContainer">
+                <Image.PreviewGroup
+                    // preview={{onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),}}
+                >
+                    <Image height={181} width={181}  src= {props.images[0]} />
+                </Image.PreviewGroup>
+            </div>*/}
+            <PostImageArea images = {props.images}/>
+
+{/*            <div className="engageLinks">
+                <div className="engageLink">
                     <span className="material-icons-outlined engageLink">
                         <PiShare className="bottom-icon"/>
                     </span>
-                </a>
+                    <p> </p>
+                </div>
 
-                <a className="engageLink">
+                <div className="engageLink">
                     <span className="material-icons-outlined engageLink">
                         <LiaComment/>
                     </span>
-                </a>
+                    <p>{props.commentCount}</p>
+                </div>
 
-                <a className="engageLink" onClick={ () => {setLike(!like)} }>
+                <div className="engageLink" onClick={ () => {setLike(!like)} }>
                     <span className="material-icons-outlined engageLink" style={{paddingTop: "1px"}}>
                        {like ?  <TbHeartFilled/> : <TbHeart/>}
                     </span>
-                </a>
-            </div>
+                    <p>{props.likeCount}</p>
+                </div>
+            </div>*/}
 
         </article>
     );

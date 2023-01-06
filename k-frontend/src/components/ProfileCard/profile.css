@@ -34,7 +34,8 @@
     width: 100%;
     padding-bottom: 16.667%;
     background-color: pink;
-    background-size: contain;
+    background-size: cover;
+    background-position: center;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
@@ -54,7 +55,6 @@
 #profile-image {
     width: 7.5vw;
     height: 7.5vw;
-    background-image: url("../../../public/logo512.png");
     background-size: contain;
     background-repeat: no-repeat;
     border-radius: 50%;
@@ -62,6 +62,12 @@
     margin-left: 15px;
     margin-right: 20px;
     flex-shrink: 0;
+}
+
+#profile-image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
 }
 
 #edit-box {
@@ -73,56 +79,59 @@
     align-items: center;
 }
 
-.following {
+#edit-box > button{
     height: 38px;
     width: 100px;
-    background: #fff;
-    outline: none;
-    border: 0.8px solid #1d9bf0;
     border-radius: 50px;
     font-weight: bold;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    color: #444;
-    margin-right: 15px;
-    font-size: 15px;
-    transition: 0.3s;
-    cursor: pointer;
-}
-.Follow {
-    height: 38px;
-    width: 100px;
-    background: #1d9bf0;
-    outline: none;
-    border: 0.8px solid rgb(221, 221, 221);
-    border-radius: 50px;
-    font-weight: bold;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    color: #fff;
     margin-right: 15px;
     font-size: 15px;
     transition: 0.3s;
     cursor: pointer;
 }
 
-#edit-profile:hover {
-    background: #e2e2e2c4;
+.following {
+
+    background: #fff;
+    outline: none;
+    border: 0.8px solid #1d9bf0;
+    color: #444;
+}
+
+.follow {
+    background: #1d9bf0;
+    outline: none;
+    border: 0.8px solid rgb(221, 221, 221);
+    color: #fff;
+}
+
+.edit-button{
+    background: #e1e7ff;
+    color: #657ef8;
+    border: none;
+}
+
+
+.edit-button:hover {
+    background: #657ef8;
+    color: #fff;
 }
 
 #name-id-box {
     display: inline-block;
-    margin: 15px 5px 0;
+    margin: 10px 5px 0;
     font-weight: 600;
-    line-height: 20px;
-    font-size: 20px;
+    line-height: 28px;
+    font-size: 26px;
     vertical-align: middle;
     width: 100%;
     padding-top: 0.5vw;
 }
 
 #name-id-box > p{
-    padding-top: 0.4vw;
+    padding-top: 0.4vw;     
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .description{
@@ -187,3 +196,9 @@
 }
 
 
+@media (max-width: 700px){
+    #profile-image{
+        width: 15vw;
+        height: 15vw;
+    }
+}

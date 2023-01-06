@@ -1,12 +1,19 @@
 package com.kaoru.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 /**
  * 动态
@@ -14,6 +21,8 @@ import lombok.Data;
  */
 @TableName(value ="t_post")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post implements Serializable {
     /**
      * ID
@@ -82,23 +91,26 @@ public class Post implements Serializable {
     private Long repostId;
 
     /**
-     * 
+     * 转发引用的动态
      */
+    @TableField(exist = false)
+    private Post repost;
+
+
+
+    @TableField(fill = FieldFill.INSERT)
     private Long createBy;
 
-    /**
-     * 
-     */
+
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
-    /**
-     * 
-     */
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
 
-    /**
-     * 
-     */
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     /**
@@ -108,4 +120,21 @@ public class Post implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public String toString(){
+        return JSON.toJSONString(this);
+    }
+
+
+    public Boolean hasContent() {
+        return Stream.of(content, image1, image2, image3, video).anyMatch(StringUtils::hasText);
+    }
+
+    public Post(Long id, Long viewCount) {
+        this.id = id;
+        this.viewCount = viewCount;
+    }
+
+
 }

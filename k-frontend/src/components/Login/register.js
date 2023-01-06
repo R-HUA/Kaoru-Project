@@ -2,9 +2,12 @@ import React from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {REGISTER_URL} from "../../constant/url";
-import {Form, Input, Loading, MessageBox} from "element-react";
+import {Form, Input, Loading} from "element-react";
 import "./login.css"
 import {useDispatch, useSelector} from "react-redux";
+import {notification} from "antd";
+import {CheckCircleTwoTone, CloseCircleFilled} from "@ant-design/icons";
+
 
 function Register(props) {
 
@@ -43,6 +46,15 @@ function Register(props) {
         ]
     });
 
+    const openNotification = (title,msg) => {
+        notification.open({
+            icon: <CloseCircleFilled style={{ color: 'red' }} />,
+            placement: 'topRight',
+            message: title,
+            description: msg,
+        });
+    };
+
     const submitForm = (event) => {
         event.preventDefault();
         dispatch({type: 'LOADING'})
@@ -60,18 +72,23 @@ function Register(props) {
                 ).then((respon) => {
                     if (respon.data.code === 200) {
                         dispatch({type: 'LOADED'})
-                        MessageBox.alert('Register Success', 'Success').then(() => {
-                            navigate('/login')
-                        }).catch(() => {});
+                        notification.open({
+                            icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+                            placement: 'topRight',
+                            message: 'Success',
+                            duration: 2,
+                            description: 'Register success, please login',
+                            onClose: () => {navigate('/login')}
+                        });
                     }
                     else{
                         dispatch({type: 'LOADED'})
-                        MessageBox.alert(respon.data.msg, 'Error').then(() => {}).catch(() => {});
+                        openNotification('Sign Up Failed',respon.data.msg)
                     }
 
                 }).catch(e => {
                     dispatch({type: 'LOADED'})
-                    MessageBox.alert(e.message, 'Network Error').then(() => {}).catch(() => {});
+                    openNotification('Network Error','Failed to connect to server')
                 })
 
             } else {

@@ -16,6 +16,7 @@ import java.util.Collection;
 public class LoginUserDetails implements UserDetails {
 
     User user;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

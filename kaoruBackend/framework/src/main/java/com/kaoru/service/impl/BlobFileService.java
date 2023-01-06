@@ -5,6 +5,8 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
+import com.kaoru.enmus.CustomedHttpCodeEnum;
+import com.kaoru.exception.AppSystemException;
 import com.kaoru.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -39,12 +41,21 @@ public class BlobFileService implements FileService {
     }
 
 
+    /**
+     * 上传文件到blob
+     * @param fileName 文件名
+     * @param file 文件
+     * @return 返回文件的url
+     */
     @Override
     public String writeResource(String fileName, MultipartFile file) {
         BlobClient blob = this.blobContainer.getBlobClient(fileName);
 
         if (isFull()) {
             log.error("Blob storage is full");
+            if (fileServiceImpl.getClass().equals(this.getClass())) {
+                throw new AppSystemException(CustomedHttpCodeEnum.SYSTEM_ERROR.getCode(),"Blob storage is full");
+            }
             return fileServiceImpl.writeResource(fileName, file);
         }
 

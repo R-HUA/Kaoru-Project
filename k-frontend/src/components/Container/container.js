@@ -6,15 +6,17 @@ import {useLocation} from "react-router-dom";
 const Container = (props) => {
     const location = useLocation();
 
-    // Scroll to top when location changes
+/*    // Scroll to top when location changes
     useLayoutEffect(() => {
         window.scrollTo(0, 0);
-    }, [location.pathname]);
+    }, [location.pathname]);*/
 
 
     return (
       <main className="container">
-        {props.children}
+          <div className="container-children">
+              {props.children}
+          </div>
         <MobileNav />
       </main>
     );

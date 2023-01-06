@@ -1,77 +1,139 @@
 import React from 'react';
 import './EditProfile.css'
 import {Button, message, Upload} from "antd";
-import {useSelector} from "react-redux";
+import ImgCrop from 'antd-img-crop';
+import {useDispatch, useSelector} from "react-redux";
 import {PlusOutlined} from "@ant-design/icons";
+import {userInitialState} from "../../reducers/userReducer";
+import axios from "axios";
+import {USER_INFO_URL} from "../../constant/url";
+import {useNavigate} from "react-router-dom";
 
 
 export const UploadAvatar = (props) => {
 
-    const beforeUpload = (file) => {
-        const isImg = file.type.startsWith('image/')
-        if (!isImg) {
-            message.error('You can only upload image file!').then(r => {});
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('Image must smaller than 2MB!').then(r => {});
-        }
-        return false;
-    };
+    const {image, setImage, handleBeforeUpload} = props;
 
     return (
-        <div className = "root">
+        <div className = "upload-root">
 
-
-            <Upload
-                name="avatar"
-                listType="picture-circle"
-                className="avatar-uploader image-circle"
-                showUploadList={false}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                beforeUpload={beforeUpload}
-            >
-                {props.image ? (
-                    <img
-                        src={props.image}
-                        alt="avatar"
-                        className="image-size"
-                        style={{
-                            width: '100%',
-                        }}
-                    />
-                ) : (
-                    <div>
-                         <PlusOutlined />
-                        <div
+            <ImgCrop rotationSlider>
+                <Upload
+                    name="avatar"
+                    listType="picture-circle"
+                    className="avatar-uploader image-circle"
+                    showUploadList={false}
+                    beforeUpload={handleBeforeUpload(setImage)}
+                >
+                    {image.url ? (
+                        <img
+                            src={image.url}
+                            alt="avatar"
+                            className="image-size"
                             style={{
-                                marginTop: 8,
+                                width: '100%',
                             }}
-                        >
-                            Upload
+                        />
+                    ) : (
+                        <div>
+                             <PlusOutlined />
+                            <div
+                                style={{
+                                    marginTop: 8,
+                                }}
+                            >
+                                Upload
+                            </div>
                         </div>
-                    </div>
-                )}
-            </Upload>
+                    )}
+                </Upload>
+            </ImgCrop>
         </div>
-)
+    )
 }
 
 
 function EditProfile(props) {
 
 
-    let imageUrl = useSelector(state => state.user.avatar);
+    const [avatar, setAvatar] = React.useState({url: useSelector(state => state.user.avatar)});
+
+    const [cover, setCover] = React.useState({url: useSelector(state => state.user.headerImg)});
+
+    const [nickName, setNickName] = React.useState(useSelector(state => state.user.nickName));
+
+    const storeSignature = useSelector(state => state.user.signature);
+
+    const navigate = useNavigate();
+
+    const [signature, setSignature] = React.useState(storeSignature === userInitialState.signature ? "" : storeSignature);
+
+    const [email, setEmail] = React.useState(useSelector(state => state.user.email));
+
+    const [phone, setPhone] = React.useState(useSelector(state => state.user.phone));
+
+    const dispatch = useDispatch();
+
+
+    const handleBeforeUpload = (setImage) => (file) => {
+        const isImg = file.type.startsWith('image/')
+        if (!isImg) {
+            message.error('You can only upload image file!').then(r => {});
+        }
+        const isLt4M = file.size / 1024 / 1024 < 4;
+        if (!isLt4M) {
+            message.error('Image must smaller than 4MB!').then(r => {});
+        }
+
+        setImage({file: file, url: URL.createObjectURL(file)});
+        return false;
+    }
+
+    function handleUpload() {
+
+        const formData = new FormData();
+        formData.append("avatar", avatar.file);
+        formData.append("header", cover.file);
+        formData.append("nickName", nickName);
+        formData.append("signature", signature);
+        formData.append("email", email);
+        formData.append("phone", phone);
+
+        console.log(nickName, signature, email, phone);
+
+        axios.put(
+            USER_INFO_URL,
+            formData,
+            {
+                headers: {
+                    "token": localStorage.getItem("token"),
+                }
+            }
+        ).then(response => {
+            console.log(response.data)
+            if (response.data.code === 200) {
+                message.success("Update successfully").then(r => {});
+                dispatch({type: 'SET_USER_INFO', payload: response.data.data});
+                navigate("/profile/" + response.data.data.id)
+            }
+            else {
+                message.error("Update failed: " + response.data.msg || response.data).then(r => {});
+            }
+        }).catch(error => {
+            message.error("Update failed: " + error).then(r => {});
+        })
+
+    }
+
 
 
     return (
         <div className="edit-profile">
 
-
-
             <div className="profile-container">
 
-                <div className="profile-header-image"></div>
+                <div className="profile-header-image"   style={{backgroundImage: `url(${cover.url})`,}}/>
+
 
                 <div className="imgcontainer">
                     {/*                    <a href="profile.html" className="root" title="Profile photo">
@@ -81,17 +143,20 @@ function EditProfile(props) {
                             alt=""/>
                    </div>
                    </a>*/}
-                    <UploadAvatar image = {imageUrl}/>
+                    <UploadAvatar image = {avatar} setImage = {setAvatar} handleBeforeUpload = {handleBeforeUpload}/>
                 </div>
 
                 <div className= "upload-group">
 
-                    <Upload>
-                        <div className="up-contain">
-                            <button className="upload-button" style={{marginRight: "1.8vw"}}  > Edit avatar </button>
-                        </div>
-                    </Upload>
-                    <Upload>
+                    <ImgCrop rotationSlider>
+                        <Upload showUploadList={false} beforeUpload = {handleBeforeUpload(setAvatar)}>
+                            <div className="up-contain">
+                                <button className="upload-button" style={{marginRight: "1.8vw"}}  > Edit avatar </button>
+                            </div>
+                        </Upload>
+                    </ImgCrop>
+
+                    <Upload showUploadList={false} beforeUpload = {handleBeforeUpload(setCover)}>
                         <div className="up-contain">
                             <button className="upload-button"> Edit background </button>
                         </div>
@@ -103,23 +168,33 @@ function EditProfile(props) {
                     <li>
                         <div className="form-group">
                             <label htmlFor="fname">Nick Name: </label>
-                            <input type="text" id="nickname" value="User "/>
+                            <input type="text" id="nickname" value={nickName} onChange={(event) => {setNickName(event.target.value)}}/>
                         </div>
                     </li>
                     <li>
                         <div className="form-group">
                             <label htmlFor="email">Email: </label>
-                            <input type="email" id="email" value="unimelb@example.com"/>
+                            <input type="email" id="email" value={email} onChange={(event) => {setEmail(event.target.value)}}/>
                         </div>
                     </li>
                     <li>
                         <div className="form-group">
-                            <label htmlFor="sex">Gender: </label>
-                            <input type="text" id="sex" value=""/>
+                            <label htmlFor="signature">Signature: </label>
+                            <input type="text" id="signature" value={signature} onChange={(event) => {setSignature(event.target.value)}}/>
                         </div>
 
                     </li>
                     <li>
+                        <div className="form-group">
+                            <label htmlFor="phone">Phone: </label>
+                            <input type="tel" id="phone" value={phone} onChange={(event) => {setPhone(event.target.value)}}/>
+                        </div>
+
+                    </li>
+
+
+
+{/*                    <li>
 
                         <div className="form-group">
                             <label htmlFor="phone">Password: </label>
@@ -133,12 +208,12 @@ function EditProfile(props) {
                             <label htmlFor="phone">Confirm: </label>
                             <input type="password" id="reg-confirm-password" placeholder="Confirm Password"/>
                         </div>
-                    </li>
+                    </li>*/}
 
                 </ul>
 
                 <div className="btn-container">
-                    <button type="submit" id="submit-btn"> Submit</button>
+                    <button id="submit-btn" onClick={handleUpload} > Submit</button>
                 </div>
 
 

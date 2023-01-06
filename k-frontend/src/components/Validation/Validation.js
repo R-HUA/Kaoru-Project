@@ -17,36 +17,44 @@ function Validation() {
 
     const token = localStorage.getItem('token')
 
-    dispatch({type: 'LOGIN'});
-    navigate(location.pathname)
+/*    dispatch({type: 'LOGIN'});          //TODO: Remove this line
+    navigate(location.pathname)*/
 
-    if(token && !needLogin){
-        console.log("Validation")
-        axios.get(
-            USER_INFO_URL,
-            {
-                headers: {
-                    'token': token
+
+    React.useEffect(() => {
+        if(token && !needLogin){
+            dispatch({type: 'LOADING'})
+            console.log("Validation");
+            axios.get(
+                USER_INFO_URL,
+                {
+                    headers: {
+                        'token': token
+                    }
                 }
-            }
-        ).then((respon) => {
-            if (respon.data.code === 200) {
-                dispatch({type: 'LOGIN'})
-                dispatch({type: 'SET_USER_INFO', payload: respon.data.data})
-                navigate(location.pathname)
-            }
-            else{
-                localStorage.removeItem('token')
+            ).then((respon) => {
+                if (respon.data.code === 200) {
+                    dispatch({type: 'LOGIN'})
+                    dispatch({type: 'SET_USER_INFO', payload: respon.data.data})
+                    dispatch({type: 'LOADED'})
+                    navigate(location.pathname)
+                }
+                else{
+                    dispatch({type: 'LOADED'})
+                    console.log("Validation: failed");
+                    navigate('/login')
+                }
+            }).catch(() => {
+                dispatch({type: 'LOADED'})
+                console.log("Validation: Network error");
                 navigate('/login')
-            }
-        }).catch(() => {
+            })
+            dispatch({type: 'NEED_LOGIN'})
+        }
+        else{
             navigate('/login')
-        })
-        dispatch({type: 'NEED_LOGIN'})
-    }
-    else{
-        navigate('/login')
-    }
+        }
+    })
 
 
     return (<Loading text="Loading" fullscreen={true} loading={true}/>);

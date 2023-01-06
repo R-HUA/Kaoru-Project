@@ -3,65 +3,103 @@ import "./Publishing.css";
 import {Button, Dialog, Dropdown, Input, Popover, Select, Upload} from "element-react";
 import {BiImage, BiVideo} from "react-icons/bi";
 import axios from "axios";
-import {UPLOAD_URL} from "../../constant/url";
+import {POST_URL, UPLOAD_URL} from "../../constant/url";
 import Search from "antd/es/input/Search";
+import {message, notification} from "antd";
+import {LoadingOutlined} from "@ant-design/icons";
+import {useLocation} from "react-router-dom";
 
 
-export default function Publishing() {
+export default function Publishing(props) {
 
-    const [image, setImage] = React.useState("");
+    const [imageList, setImageList] = React.useState([]);
 
     const [dialogImageUrl, setDialogImageUrl] = React.useState("");
 
     const [dialogVisible, setDialogVisible] = React.useState(false);
 
+    const [conmentable, setConmentable] = React.useState("1");
+
+    const [video, setVideo] = React.useState("");
+
+    const [publishButtonDisabled, setPublishButtonDisabled] = React.useState(false);
+
     const inputAreaRef = React.useRef();
 
     const uploadRef = React.useRef();
 
+    const pathname = useLocation().pathname;
+
     const handlehttpRequest = (req) => {
-        const url = URL.createObjectURL(req.file);
-        setImage(url);
         req.onSuccess()
-        console.log(url);
     };
 
     const handleRemove = (file, fileList) => {
         console.log(file, fileList);
     }
 
-    const handlePreview = () => {
-        setDialogImageUrl(image);
+    const handlePreview = (file) => {
+        setDialogImageUrl(file.url);
         setDialogVisible(true);
     }
 
-    function publishing() {
-        console.log(inputAreaRef.current.value);
-
-        fetch(image)
-            .then(res => res.blob())
-            .then(blob => {
-                const file = new File([blob], "file.jpg", { type: "image/jpeg" })
+    async function publishing() {
+        try {
+            let urlList = [];
+            setPublishButtonDisabled(true);
+            for (const file of imageList) {
                 const formData = new FormData();
-                formData.append("file", file);
-                axios.post(UPLOAD_URL + "/file.jpg", formData)
+                formData.append("file", file.raw);
+                await axios.post(UPLOAD_URL + encodeURIComponent(file.name), formData,{headers: {'token': localStorage.getItem('token')}})
                     .then((res) => {
-                        console.log(res)
-                    }).catch((err) => {console.log(err)});
+                        console.log(res);
+                        urlList.push(res.data.data);
+                    });
+            }
+            await axios.post(
+                POST_URL,
+                {
+                    content: inputAreaRef.current.value,
+                    image1: urlList[0] ? urlList[0] : null,
+                    image2: urlList[1] ? urlList[1] : null,
+                    image3: urlList[2] ? urlList[2] : null,
+                    video: video ? video : null,
+                    status: "0",
+                    isComment: conmentable,
+                },
+                {
+                    headers: {'token': localStorage.getItem('token')}
+                }
+            ).then(
+                (res) => {
+                    // console.log(res)
+                    if (res.data.code === 200) {
+                        uploadRef.current.clearFiles();    // delete the uploaded files
+                        inputAreaRef.current.value = "";   // clear the input area
+                        message.success("Post successfully");
+                    }
+                    else {
+                        notification.error({message: "Post failed", description: res.data.msg});
+                    }
+                })
+            setPublishButtonDisabled(false);
+        } catch (error) {
+            console.log(error);
+            setPublishButtonDisabled(false);
+            notification.error({
+                message: "Network error",
+                description: error.message,
             })
-            .catch(err => {
-            console.error(err)
-            })
-
-        uploadRef.current.clearFiles();    // delete the uploaded files
+        }
     }
 
     function onSearch(value, event){
-        console.log(value, event);
+        message.warning("Not supported yet");
+        setVideo(value);
     }
 
     return (
-        <>
+        <div style={ pathname === '/moment' ? {} : {display: "none"}}>
             <div className="createTweet">
                 <div className="InputArea">
                     <div className="tweetbox">
@@ -83,9 +121,9 @@ export default function Publishing() {
                                         className="img-uploader"
                                         limit={3}
                                         accept="image/*"
-                                        action="https://127.0.0.1/"
                                         listType="picture-card"
                                         httpRequest={handlehttpRequest}
+                                        onChange={(file, fileList) => setImageList(fileList)}
                                         onPreview={(file) => handlePreview(file)}
                                         onRemove={(file, fileList) => handleRemove(file, fileList)}
                                     >
@@ -93,9 +131,9 @@ export default function Publishing() {
                                     </Upload>
                                     <Dialog
                                         visible={dialogVisible}
-                                        size="tiny"
-                                        onCancel={() => setDialogVisible(false)}>
-                                        <img width="100%" src={dialogImageUrl} alt=""/>
+                                        onCancel={() => setDialogVisible(false)}
+                                    >
+                                        <img width="100%" style={{margin: "-38px 0 -3px", zIndex:"-100", position: "relative"}} src={dialogImageUrl} alt=""/>
                                     </Dialog>
                                 </>
                             )}>
@@ -106,9 +144,9 @@ export default function Publishing() {
                     <div className="img-upload">
                         <Popover placement="bottom" width="339" trigger="click" content={(
                             <>
-                                <Search placeholder="Please enter video URL" allowClear onSearch={onSearch} style={{ width: "100%" }} />
+                                <Search placeholder="Please enter video URL" onSearch={onSearch} />
 
-                                <iframe
+                                {/*      <iframe
                                     style={{width: "100%"}}
                                     src="https://www.youtube.com/embed/"
                                     title="YouTube video player"
@@ -119,10 +157,10 @@ export default function Publishing() {
 
                                 <iframe
                                     style={{width: "100%"}}
-                                    src="//player.bilibili.com/player.html?bvid=BV1Pk4y1T7RJ&page=1"
+                                    src="//player.bilibili.com/player.html?bvid=BV1Pk4y1T7RJ&page=1&autoplay=0"
                                     title="bilibili video player"
                                     allowFullScreen="true">
-                                </iframe>
+                                </iframe>*/}
 
                             </>
                         )}>
@@ -130,25 +168,24 @@ export default function Publishing() {
                         </Popover>
                     </div>
                     <div className="permission">
-                        <Dropdown onCommand={(e) =>(console.log(e))}
+                        <Dropdown onCommand={(e) =>(setConmentable(e))}
                             menu={(
-                            <Dropdown.Menu >
-                                <Dropdown.Item command="Allow">Allow</Dropdown.Item>
-                                <Dropdown.Item command="No">No</Dropdown.Item>
+                            <Dropdown.Menu style={{minWidth: "0", marginRight:"8%"}}>
+                                <Dropdown.Item command="1">Allow</Dropdown.Item>
+                                <Dropdown.Item command="0">Disable</Dropdown.Item>
                             </Dropdown.Menu>
                         )}>
                         <span className="el-dropdown-link">
-                          {"Allow comment"} <i className="el-icon-caret-bottom el-icon--right"></i>
+                          {conmentable == "1" ? "Allow Comment": "Disable Comment"} <i className="el-icon-caret-bottom el-icon--right"></i>
                         </span>
                         </Dropdown>
                     </div>
-                    <button id="publishButton" onClick={publishing}>
-                        Post
+                    <button className="publishButton" onClick={publishing} disabled={publishButtonDisabled}>
+                        {publishButtonDisabled ? <LoadingOutlined /> : ""} Post
                     </button>
                 </div>
             </div>
-        </>
-
+        </div>
     )
 }
 

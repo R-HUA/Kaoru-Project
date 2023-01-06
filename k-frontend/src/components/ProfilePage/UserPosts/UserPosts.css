@@ -1,0 +1,21 @@
+.userPosts{
+    width: 100%;
+    height: fit-content;
+}
+
+
+.nomore{
+    margin-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 6px 0;
+    text-align: center;
+    color: #5e5e5e5e;
+}
+
+
+.post-bottom{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
