@@ -9,7 +9,7 @@
    <a target="_blank" href=" ">
       <img src="https://img.shields.io/badge/JDK-8-pink"/>
       <img src="https://img.shields.io/badge/springboot-2.7.12-pink"/>
-      <img src="https://img.shields.io/badge/React-18-pink"/>
+      <img src="https://img.shields.io/badge/React-17-pink"/>
       <img src="https://img.shields.io/badge/mysql-8.0.0-pink"/>
       <img src="https://img.shields.io/badge/mybatis--plus-3.5.0-pink"/>
       <img src="https://img.shields.io/badge/redis-7-pink"/>
@@ -25,7 +25,7 @@
 
 **Frontend:** React + React Router + React Redux + Axios + Element UI
 
-**Backend:** SpringBoot + Mysql + Redis + Nginx + Swagger2 + MyBatisPlus
+**Backend:** SpringBoot + Mysql + Redis + Nginx + MyBatisPlus
 
 **Others:** 
 

@@ -15,7 +15,7 @@ function NavHeader(props) {
                     {props.selected === 1 ? <div id="line"/> : null}
                 </div>
 
-                <div className="box-nav" onClick={() => {props.setSelected(2)}}>
+{/*                <div className="box-nav" onClick={() => {props.setSelected(2)}}>
                     <p id="nav">Media</p>
                     {props.selected === 2 ? <div id="line"/> : null}
                 </div>
@@ -23,7 +23,7 @@ function NavHeader(props) {
                 <div className="box-nav" onClick={() => {props.setSelected(3)}}>
                     <p id="nav">Likes</p>
                     {props.selected === 3 ? <div id="line"/> : null}
-                </div>
+                </div>*/}
             </div>
         </>
     );

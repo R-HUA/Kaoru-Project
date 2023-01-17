@@ -13,29 +13,29 @@ public class FollowController {
     @Autowired
     private FollowService followService;
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @PostMapping("/follow/{followeeId}")
     public ResponseResult follow(@PathVariable("followeeId") Long followeeId) {
         return followService.addFollow(followeeId);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @DeleteMapping("/follow/{followeeId}")
     public ResponseResult unfollow(@PathVariable("followeeId") Long followeeId) {
         return followService.deleteFollow(followeeId);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/follower/{id}")
     public ResponseResult getFollowerUserList(@PathVariable("id") Long id) {
         return followService.getFollowerUserList(id);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/following/{id}")
     public ResponseResult getFollowingUserList(@PathVariable("id") Long id) {
         return ResponseResult.okResult(followService.getFollowingUserList(id));

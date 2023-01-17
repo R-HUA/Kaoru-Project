@@ -17,8 +17,8 @@ public class ReplyController {
     @Autowired
     private ReplyService replyService;
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/article/replyList/{articleId}/{pageNum}")
     public ResponseResult articleReplyList(@PathVariable("articleId") Long articleId,
                                     @PathVariable("pageNum") Integer pageNum,
@@ -26,8 +26,8 @@ public class ReplyController {
         return replyService.replyList(AppConstants.REPLY_TYPE_ARTICLE, articleId, pageNum, pageSize);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/post/replyList/{postId}/{pageNum}")
     public ResponseResult postReplyList(@PathVariable("postId") Long postId,
                                     @PathVariable("pageNum") Integer pageNum,
@@ -35,15 +35,15 @@ public class ReplyController {
         return replyService.replyList(AppConstants.REPLY_TYPE_POST, postId, pageNum, pageSize);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @PostMapping("/reply")
     public ResponseResult addReply(@RequestBody Reply reply){
         return replyService.addReply(reply);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/reply/{rootId}/children")
     public ResponseResult getAllChiledren(@PathVariable("rootId") Long rootId){
         return replyService.getAllChiledren(rootId);

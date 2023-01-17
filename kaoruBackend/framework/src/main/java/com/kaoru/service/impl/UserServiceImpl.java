@@ -1,6 +1,8 @@
 package com.kaoru.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kaoru.enmus.CustomedHttpCodeEnum;
 import com.kaoru.exception.AppSystemException;
@@ -10,6 +12,7 @@ import com.kaoru.service.UserService;
 import com.kaoru.mapper.UserMapper;
 import com.kaoru.utils.*;
 import com.kaoru.vo.LoginVo;
+import com.kaoru.vo.PageVO;
 import com.kaoru.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +24,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -198,6 +202,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         throw new AppSystemException(CustomedHttpCodeEnum.SYSTEM_ERROR);
+    }
+
+    @Override
+    public ResponseResult getUserList(Integer pageNum, Integer pageSize) {
+        pageNum = pageNum < 1 ? 1 : pageNum;
+        pageSize = pageSize == null ? 10 : pageSize;
+
+        Long id = WebUtils.getUserIDFromSecurityContext();
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.ne(User::getId, id);
+
+        Page<User> userPage = new Page<>(pageNum, pageSize);
+        page(userPage,wrapper);
+        List<UserInfoVo> userInfoVos = BeanCopyUtils.copyBeanList(userPage.getRecords(), UserInfoVo.class);
+        return ResponseResult.okResult(new PageVO(userInfoVos, userPage.getTotal(), userPage.getSize()));
     }
 
 

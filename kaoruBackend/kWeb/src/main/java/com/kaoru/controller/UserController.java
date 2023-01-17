@@ -27,8 +27,8 @@ public class UserController {
      *
      * @return 包含LoginVo的结果
      */
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @PostMapping("/login")
     public ResponseResult login(@RequestBody User user){
 
@@ -50,22 +50,22 @@ public class UserController {
         return userService.logout();
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/user")
     public ResponseResult getCurrentUserInfo(){
         return userService.getUserInfo();
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/user/{id}")
     public ResponseResult getUserInfoById(@PathVariable("id") Long id){
         return ResponseResult.okResult(userService.getUserInfoById(id));
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @PutMapping("/userInfo")
     public ResponseResult updateUserInfo(@RequestBody User user){
         return userService.updateUserInfo(user);
@@ -83,8 +83,8 @@ public class UserController {
      *
      * @return 更新后的用户信息
      */
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @PutMapping("/user")
     public ResponseResult updateUser(
             @RequestParam(name = "avatar", required = false) MultipartFile avatar,
@@ -97,4 +97,10 @@ public class UserController {
         return userService.updateUserAndUpload(avatar,header,nickName,signature,email,phone);
     }
 
+    @AppLog
+    @PreventDuplicate
+    @GetMapping("/user/userList/{page}")
+    public ResponseResult getUserList(@PathVariable("page") Integer pageNum, @RequestParam(name = "size", required = false) Integer pageSize){
+        return userService.getUserList(pageNum,pageSize);
+    }
 }

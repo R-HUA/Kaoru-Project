@@ -17,12 +17,13 @@ function Follow(props) {
     const dispatch = useDispatch();
 
 
+    // get following and follower lists
     async function getFollowState(id) {
 
         let followings;
         let followers;
 
-        console.log("get follow state", props.followLists);
+
 
         if (!isLoading){
             setIsLoading(true);
@@ -72,6 +73,7 @@ function Follow(props) {
     }
 
 
+    // handle follow and unfollow
     const changeFollow = () => {
         setIsLoading(true);
 

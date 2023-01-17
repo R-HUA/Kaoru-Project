@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kaoru.AppConstants;
+import com.kaoru.dto.ArticleDto;
+import com.kaoru.enmus.CustomedHttpCodeEnum;
+import com.kaoru.exception.AppSystemException;
 import com.kaoru.mapper.ArticleMapper;
 import com.kaoru.pojo.Article;
-import com.kaoru.pojo.Post;
 import com.kaoru.service.ArticleService;
 import com.kaoru.service.FollowService;
 import com.kaoru.service.ReplyService;
@@ -26,8 +28,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.kaoru.AppConstants.POST_STATUS_NORMAL;
-
 
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
@@ -44,9 +44,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ResponseResult articleList(Long userId, Integer pageNum, Integer pageSize, Long categoryId) {
 
-        pageNum = (pageNum < 1) ? 1 : pageNum;
-        pageSize = Optional.ofNullable(pageSize).orElse(10);
-
         // condition
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
 
@@ -56,21 +53,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         queryWrapper.eq(Article::getCreateBy, userId);
         queryWrapper.orderByDesc(Article::getIsTop);
+        queryWrapper.orderByDesc(Article::getCreateTime);
 
 
-        // paging query
-        Page<Article> articlePage = new Page<>(pageNum, pageSize);
-        page(articlePage, queryWrapper);
-
-        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articlePage.getRecords(), ArticleListVo.class);
-
-
-
-        PageVO pageVO = new PageVO(articleListVos, articlePage.getTotal(),articlePage.getPages());
-
-
-
-        return ResponseResult.okResult(pageVO);
+        return getPageResult(pageNum, pageSize, queryWrapper);
     }
 
     /**
@@ -121,7 +107,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         queryWrapper.eq(Article::getStatus, AppConstants.ARTICLE_STATUS_NORMAL);
         queryWrapper.in(Article::getCreateBy, followingUserMap.keySet());
-        queryWrapper.orderByDesc(Article::getIsTop);
+
         queryWrapper.orderByDesc(Article::getCreateTime);
 
         pageNum = (pageNum < 1) ? 1 : pageNum;
@@ -134,9 +120,97 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         articleListVos.forEach(articleListVo -> {
             articleListVo.setPoster(followingUserMap.get(articleListVo.getCreateBy()));
+            try {
+                articleListVo.setViewCount(((Integer)redisCache.getCacheMapValue("article:viewCounts", String.valueOf(articleListVo.getId()))).longValue());
+            } catch (Exception e) {
+                log.error("Get article view count from redis failed: " + e.getMessage());
+            }
         });
 
         PageVO pageVO = new PageVO(articleListVos, articlePage.getTotal(), articlePage.getPages());
+
+        return ResponseResult.okResult(pageVO);
+    }
+
+    @Override
+    public ResponseResult getRecentArticleList(Integer pageSize) {
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Article::getStatus, AppConstants.ARTICLE_STATUS_NORMAL);
+        queryWrapper.orderByDesc(Article::getCreateTime);
+        queryWrapper.last( pageSize == null ? "limit 3" : "limit " + pageSize);
+
+        List<Article> articleList = list(queryWrapper);
+        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articleList, ArticleListVo.class);
+
+        return ResponseResult.okResult(articleListVos);
+
+    }
+
+    @Override
+    public ResponseResult addArticle(ArticleDto articleDto) {
+        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+
+        if(save(article)){
+            return ResponseResult.okResult(article.getId());
+        }
+
+        throw new AppSystemException(CustomedHttpCodeEnum.SYSTEM_ERROR);
+    }
+
+    @Override
+    public ResponseResult draftList(Integer pageNum, Integer pageSize) {
+
+        Long userId = WebUtils.getUserIDFromSecurityContext();
+
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Article::getStatus, AppConstants.ARTICLE_STATUS_DRAFT);
+        queryWrapper.eq(Article::getCreateBy, userId);
+
+        return getPageResult(pageNum, pageSize, queryWrapper);
+    }
+
+    @Override
+    public ResponseResult getDraft(Long id) {
+
+        ArticleDto articleDto = BeanCopyUtils.copyBean(getById(id), ArticleDto.class);
+
+        return ResponseResult.okResult(articleDto);
+    }
+
+    @Override
+    public ResponseResult updateArticle(ArticleDto articleDto) {
+        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+
+        if(updateById(article)){
+            return ResponseResult.okResult(article.getId());
+        }
+
+        throw new AppSystemException(CustomedHttpCodeEnum.SYSTEM_ERROR);
+    }
+
+    private ResponseResult getPageResult(Integer pageNum, Integer pageSize, LambdaQueryWrapper<Article> queryWrapper) {
+
+        pageNum = (pageNum < 1) ? 1 : pageNum;
+        pageSize = Optional.ofNullable(pageSize).orElse(10);
+
+        Page<Article> articlePage = new Page<>(pageNum, pageSize);
+        page(articlePage, queryWrapper);
+
+        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articlePage.getRecords(), ArticleListVo.class);
+
+
+        try {
+            articleListVos.forEach(articleListVo -> {
+
+                Long viewCount = ((Integer)redisCache.getCacheMapValue("article:viewCounts", String.valueOf(articleListVo.getId()))).longValue();
+                articleListVo.setViewCount(viewCount);
+            });
+        }
+        catch (Exception e) {
+            log.error("Get article view count from redis failed: " + e.getMessage());
+        }
+
+        PageVO pageVO = new PageVO(articleListVos, articlePage.getTotal(),articlePage.getPages());
 
         return ResponseResult.okResult(pageVO);
     }

@@ -56,10 +56,10 @@ const Editor = (props) => {
             content={
             <Form layout = "inline">
                 <Form.Item style ={{width: "70%"}}>
-                    <TextArea autoSize={{minRows: 2, maxRows: 3}} onChange={(e) => {setNewReply(e.target.value)}} value={newReply} maxLength={400} />
+                    <TextArea autoSize={{minRows: 1, maxRows: 3}} onChange={(e) => {setNewReply(e.target.value)}} value={newReply} maxLength={400} />
                 </Form.Item>
                 <Form.Item style ={{width: "20%"}}>
-                    <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary" style ={{height: "100%"}}>
+                    <Button htmlType="submit" loading={submitting} onClick={onSubmit} style ={{height: "100%"}}>
                         Add Comment
                     </Button>
                 </Form.Item>

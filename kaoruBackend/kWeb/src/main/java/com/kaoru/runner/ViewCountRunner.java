@@ -1,5 +1,6 @@
 package com.kaoru.runner;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.kaoru.mapper.ArticleMapper;
 import com.kaoru.pojo.Article;
 import com.kaoru.service.ArticleService;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.kaoru.AppConstants.ARTICLE_STATUS_NORMAL;
 
 
 /**
@@ -32,8 +35,18 @@ public class ViewCountRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args)  {
-        List<Article> articles = articleMapper.selectList(null);
-        Map<String, Integer> viewMap = articles.stream().collect(Collectors.toMap(e -> String.valueOf(e.getId()), e -> Math.toIntExact(e.getViewCount())));
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Article::getStatus, ARTICLE_STATUS_NORMAL);
+        List<Article> articles = articleMapper.selectList(queryWrapper);
+
+
+        Map<String, Integer> viewMap = articles.stream().collect(
+                Collectors.toMap(
+                        e -> String.valueOf(e.getId()),
+                        e -> Math.toIntExact(e.getViewCount())
+                )
+        );
+
         redisCache.setCacheMap("article:viewCounts",viewMap);
 
 

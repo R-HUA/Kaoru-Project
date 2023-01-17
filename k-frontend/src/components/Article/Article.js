@@ -26,6 +26,7 @@ function Article(props) {
         viewCount: 0,
         commentCount: 0,
         createTime: "2020-01-01 10:00:00",
+        isComment: 0,
     });
 
     useEffect(() => {
@@ -119,8 +120,10 @@ function Article(props) {
                 }}
             />
 
-
-            <Comments articleId = {article.id} commentsCount={article.commentCount} type={REPLY_TYPE_ARTICLE}/>
+            {article.isComment == "1" ?
+                <Comments articleId = {article.id} commentsCount={article.commentCount} type={REPLY_TYPE_ARTICLE}/>
+                : <div></div>
+            }
 
         </div>
     );

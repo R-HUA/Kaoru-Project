@@ -31,4 +31,6 @@ public interface UserService extends IService<User> {
     UserInfoVo getUserInfoById(Long id);
 
     ResponseResult updateUserAndUpload(MultipartFile avatar, MultipartFile header, String nickName, String signature, String email, String phone);
+
+    ResponseResult getUserList(Integer pageNum, Integer pageSize);
 }

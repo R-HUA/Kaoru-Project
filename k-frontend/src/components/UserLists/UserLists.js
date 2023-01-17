@@ -4,27 +4,33 @@ import Follow from "../Follow/Follow";
 
 function UserLists(props) {
 
-    const [isopen,setOpen] = useState(true);
-
     return (
 
         <Modal
-            open= {isopen}
+            open= {props.isOpen}
             title= "Title"
             footer= {null}
-            onCancel ={() => setOpen(false)}
+            onCancel ={() => props.setOpen(false)}
         >
             <List
                 itemLayout="horizontal"
                 dataSource={props.userList}
                 renderItem={(item, index) => (
                     <List.Item
-                        actions={[<Follow display = {true} type = "text"/>]}
+                        key={item.id}
+                        actions={[<Follow
+                            disply = {true}
+                            type = "text"
+                            uid = {item.id}
+                            userInfo = {item}
+                            followLists = {[]}
+                            setFollowLists = {() => {}}
+                        />]}
                     >
                         <List.Item.Meta
-                            avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}/>}
-                            title={<a href="https://ant.design">{item.title}</a>}
-                            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                            avatar={<Avatar src={item.avatar}/>}
+                            title={item.nickName}
+                            description={item.description}
                         />
                     </List.Item>
                 )}

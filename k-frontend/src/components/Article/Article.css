@@ -21,7 +21,11 @@
 }
 
 .markdown-body h3,h4{
-    margin-top: 10px;
+    margin-top: 15px;
+}
+
+.markdown-body p{
+    padding-bottom: 10px;
 }
 
 .markdown-body img{
@@ -64,11 +68,10 @@
 }
 
 .article-thumbnail{
-    max-width: 100%;
-    max-height: 60vw;
+    width: 95%;
+    max-height: 50vw;
     display: flex;
     height: auto;
-    width: auto;
     object-fit: scale-down;
     padding: 10px;
     margin: 0px 1.5vw 20px;
@@ -79,6 +82,8 @@
 }
 
 .article-thumbnail img{
+    max-width: 100%;
+    max-height: 100%;
     width: auto;
     height: auto;
     object-fit: scale-down;

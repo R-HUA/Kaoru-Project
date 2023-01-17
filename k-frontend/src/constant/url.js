@@ -26,6 +26,12 @@ export const USER_ARTICLE_URL = (userId,pageNum) => (`${WEB_URL}/article/article
 
 export const FOLLOWING_ARTICLE_URL = WEB_URL + "/article/articleList/";
 
+export const NEW_ARTICLE_URL = WEB_URL + "/article";
+
+export const DRAFT_LIST_URL = WEB_URL + "/article/articleList/draft/";
+
+export const DRAFT_URL = WEB_URL + "/article/draft/";
+
 export const ARTICLE_REPLY_URL = (articleId, pageNum) => (`${WEB_URL}/article/replyList/${articleId}/${pageNum}`);
 
 export const POST_REPLY_URL = (postid, pageNum) => (`${WEB_URL}/post/replyList/${postid}/${pageNum}`);
@@ -41,3 +47,6 @@ export const FOLLOWING_URL = WEB_URL + "/following/"
 export const FOLLOW_URL = WEB_URL + "/follow/"
 
 export const UPDATE_POST_VIEW_URL = (postId) => `${WEB_URL}/post/${postId}/view`;
+
+
+export const USER_LIST_URL = (pageNum) => (`${WEB_URL}/user/userList/${pageNum}`);

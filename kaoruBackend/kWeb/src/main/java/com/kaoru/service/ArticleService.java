@@ -1,6 +1,7 @@
 package com.kaoru.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.kaoru.dto.ArticleDto;
 import com.kaoru.pojo.Article;
 import com.kaoru.utils.ResponseResult;
 
@@ -33,4 +34,14 @@ public interface ArticleService extends IService<Article> {
     Boolean updateArticleViewCount(Long id);
 
     ResponseResult flowingArticleList(Integer page, Integer pageSize);
+
+    ResponseResult getRecentArticleList(Integer pageSize);
+
+    ResponseResult addArticle(ArticleDto articleDto);
+
+    ResponseResult draftList(Integer pageNum, Integer pageSize);
+
+    ResponseResult getDraft(Long id);
+
+    ResponseResult updateArticle(ArticleDto articleDto);
 }

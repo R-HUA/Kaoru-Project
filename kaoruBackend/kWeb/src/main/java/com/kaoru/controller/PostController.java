@@ -15,36 +15,36 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/post/{id}")
     public ResponseResult getPostContent(@PathVariable(name = "id") Long id){
         return postService.getPostContent(id);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/postList/{userId}/{pageNum}")
     public ResponseResult getUserPostList(@PathVariable(name = "userId", required = false) Long userId,@PathVariable(name = "pageNum") Integer pageNum, Integer pageSize){
         return postService.getUserPostList(pageNum, pageSize, userId);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @GetMapping("/postList/following/{pageNum}")
     public ResponseResult getAllFollowingPost(@PathVariable(name = "pageNum", required = false) Integer pageNum, Integer pageSize){
         return postService.getFollowingPostList(pageNum, pageSize);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @PostMapping("/post")
     public ResponseResult addPost(@RequestBody Post post){
         return postService.newPost(post);
     }
 
-    @PreventDuplicate
     @AppLog
+    @PreventDuplicate
     @DeleteMapping("/post/{id}")
     public ResponseResult deletePost(@PathVariable(name = "id") Long id){
         return postService.deletePost(id);

@@ -1,6 +1,7 @@
 package com.kaoru.controller;
 
 import com.kaoru.annotation.AppLog;
+import com.kaoru.annotation.PreventDuplicate;
 import com.kaoru.enmus.CustomedHttpCodeEnum;
 import com.kaoru.service.FileService;
 import com.kaoru.utils.ResponseResult;
@@ -19,6 +20,7 @@ public class StorageController {
     private FileService blobFileService;
 
     @AppLog
+    @PreventDuplicate
     @PostMapping("/{fileName}")
     public ResponseResult uploadFile(@PathVariable("fileName") String fileName, MultipartFile file){
 
