@@ -19,20 +19,18 @@
 
 ## Project Address
 
-## Project Features
+[Kaoru](https://www.xn--kaoru-xt2k158aoz2c.live)
+
 
 ## Technology Introduction
 
-**Frontend:** React + React Router + React Redux + Axios + Element UI
+**Frontend:** React + React Router + React Redux + Axios + Element UI + Ant Design
 
 **Backend:** SpringBoot + Mysql + Redis + Nginx + MyBatisPlus
 
-**Others:** 
 
 ## Operating Environment
 
-**Server:** 
+**Server:** Azure Standard B1s
 
-**Object Storage:** 
-
-**Minimum Configuration:** 
+**Storage:** Azure Blob + Azure Files
