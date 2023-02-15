@@ -4,6 +4,7 @@ import {BiArrowBack} from "react-icons/bi";
 import {CgMoreAlt} from "react-icons/cg";
 import "./profile.css"
 import Follow from "../Follow/Follow";
+import {userInitialState} from "../../reducers/userReducer";
 
 function ProfileCard(props) {
 
@@ -21,11 +22,11 @@ function ProfileCard(props) {
                 </div>
                 <div id="header-box">
                     <div id="profile-image">
-                        <img src={props.userInfo.avatar}  alt=""/>
+                        <img src={props.userInfo.avatar || userInitialState.avatar}  alt=""/>
                     </div>
                     <div id="name-id-box">
                         <p>{props.userInfo.nickName}</p>
-                        <p className="description">{props.userInfo.signature}</p>
+                        <p className="description">{props.userInfo.signature || 'Default signature given to everyone~'}</p>
                     </div>
                     <div id="edit-box">
 {/*                        <span id="more-box">
@@ -49,16 +50,16 @@ function ProfileCard(props) {
 
                 <div id="following-follow-box">
 
-                    <NavLink  className = "follow-text" to={"/profile"}>
+                    <div  className = "follow-text" >
                         <span id="number-follow">{(follow && follow.following && follow.following.length)} </span>
                         Following
-                    </NavLink>
+                    </div>
 
 
-                    <NavLink  className ="follow-text" to={"/profile"}>
+                    <div  className ="follow-text" >
                         <span id="number-follow" className="margin-left">{(follow && follow.follower && follow.follower.length)} </span>
                         Followers
-                    </NavLink>
+                    </div>
                 </div>
 
             </div>

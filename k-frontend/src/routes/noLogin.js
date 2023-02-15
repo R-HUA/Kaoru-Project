@@ -1,10 +1,9 @@
 import {lazy} from "react";
-import ArticleList from "../components/ArticleList/ArticleList";
 
 
 let Login  = lazy(() => import("../components/Login/login"));
 let Register = lazy(() => import("../components/Login/register"));
-
+let Kaoru = lazy(() => import( "../components/kaoru/kaoru"));
 
 const noLogin = [
     {
@@ -17,6 +16,11 @@ const noLogin = [
         element: <Register/>,
         children: []
     },
+    {
+        path: '/kaoru',
+        element: <Kaoru/>,
+        children: []
+    }
 ]
 
 export default noLogin;

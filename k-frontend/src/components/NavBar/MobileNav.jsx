@@ -1,26 +1,32 @@
 import "./navbar.css"
-import {Link} from "react-router-dom";
-import {BiBookmark, BiHash, BiHomeCircle} from "react-icons/bi";
+import {NavLink} from "react-router-dom";
+import {BiBookmark, BiCollection, BiHash, BiHomeCircle, BiUserCircle} from "react-icons/bi";
 import React from "react";
+import {RiFileList2Line} from "react-icons/ri";
 
 export function MobileNav() {
 	return (
 		<nav className="mobileNav">
 			<ul>
 				<li>
-					<Link to={"/"}>
+					<NavLink to={"/"}>
 						<span className="material-icons-outlined"><BiHomeCircle className ="home-icon"/></span>
-					</Link>
+					</NavLink>
 				</li>
 				<li>
-					<Link to={"/explore"}>
-						<span className="material-icons-outlined"><BiHash className ="home-icon"/></span>
-					</Link>
+					<NavLink to={"/moment"}>
+						<span className="material-icons-outlined"><BiCollection className ="home-icon"/></span>
+					</NavLink>
 				</li>
 				<li>
-					<Link to={"/bookmarks"}>
-						<span className="material-icons-outlined"><BiBookmark className ="home-icon"/></span>
-					</Link>
+					<NavLink to={"/article"}>
+						<span className="material-icons-outlined"><RiFileList2Line className ="home-icon"/></span>
+					</NavLink>
+				</li>
+				<li>
+					<NavLink to={"/userinfo"}>
+						<span className="material-icons-outlined"><BiUserCircle className ="home-icon"/></span>
+					</NavLink>
 				</li>
 			</ul>
 		</nav>

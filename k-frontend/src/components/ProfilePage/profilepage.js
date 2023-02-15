@@ -24,15 +24,12 @@ function ProfilePage(props) {
 
     useEffect(() => {
 
-        console.log(uidParam);
-
-
         function loadData(){
             if (!uidParam.id || uidParam.id == userInfo.id) {
                 setPosterInfo(userInfo);
                 setIsThisUser( true);
 
-                console.log("current user");
+                //console.log("current user");
             }
             else{
 

@@ -26,6 +26,10 @@ const articleReducer = (state = initialState, action) => {
             };
         case 'LOGOUT':
             return initialState;
+        case 'ADD_FOLLOWING':
+            return initialState;
+        case 'REMOVE_FOLLOWING':
+            return initialState;
         default:
             return state;
     }

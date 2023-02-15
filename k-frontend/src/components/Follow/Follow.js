@@ -43,8 +43,6 @@ function Follow(props) {
                 }
             })
 
-            console.log("FOLLOWING")
-
             await axios.get(FOLLOWER_URL + id,
                 {
                     headers: {
@@ -60,10 +58,6 @@ function Follow(props) {
                 }
             })
 
-            console.log("FOLLOWER")
-
-            console.log("followings,followers: ",followings,followers);
-
             setIsLoading(false);
         }
 
@@ -76,8 +70,6 @@ function Follow(props) {
     // handle follow and unfollow
     const changeFollow = () => {
         setIsLoading(true);
-
-        console.log("change follow");
 
         axios(
             {
@@ -95,6 +87,7 @@ function Follow(props) {
                         dispatch({type: 'ADD_FOLLOWING', payload: props.userInfo});
                     }
                     setIsFollow(!isFollow);
+
                 }
                 else{
                     message.error(response.data.msg || response.data.toString());
@@ -110,8 +103,6 @@ function Follow(props) {
 
 
     useEffect(() => {
-
-        console.log("follow component : ",userInfo.following);
 
         if (props.uid){
             if (userInfo.id !== props.uid && userInfo.following && userInfo.follower) {

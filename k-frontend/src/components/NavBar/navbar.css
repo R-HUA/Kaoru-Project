@@ -17,6 +17,10 @@
   font-weight: 600;
 }
 
+.active .material-icons-outlined svg{
+  color: #0f1419;
+}
+
 .mobileNav{
     display: none;
 }
@@ -116,7 +120,12 @@
   }
 
   .mobileNav a {
-    color: #828282;
+    color: #828282 !important;
+  }
+
+  .mobileNav a svg{
+    margin-top: 5px;
+    color: #828282 ;
   }
 
   .mobileNav > ul {

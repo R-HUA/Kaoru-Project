@@ -67,6 +67,14 @@ const noLogin = [
                 element: <Placeholder/>
             },
             {
+                path: 'bookmark',
+                element: <Placeholder/>
+            },
+            {
+                path: 'message',
+                element: <Placeholder/>
+            },
+            {
                 path: '*',
                 element: <NotFound/>
             }

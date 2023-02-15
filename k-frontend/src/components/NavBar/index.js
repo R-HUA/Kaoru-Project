@@ -49,15 +49,19 @@ function NavBar(props) {
                     </button>
                 </NavLink>
 
+                <NavLink to="/message">
                 <button className = "row">
                     <BiMessageDots className ="home-icon"/>
                     <p className ="nav-title">Message</p>
                 </button>
+                </NavLink>
 
+                <NavLink to="/bookmark">
                 <button className = "row">
                     <BiBookmark className ="home-icon"/>
                     <p className ="nav-title">Bookmark</p>
                 </button>
+                </NavLink>
 
                 <NavLink to={"/userinfo/" + userInfo.id}>
                     <button className = "row">

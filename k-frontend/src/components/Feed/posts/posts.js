@@ -8,6 +8,7 @@ import {TbHeart,TbHeartFilled} from "react-icons/tb";
 import {formatTime} from "../../../constant/times";
 import axios from "axios";
 import {UPDATE_POST_VIEW_URL} from "../../../constant/url";
+import {userInitialState} from "../../../reducers/userReducer";
 
 
 export const PostImageArea = (props) => {
@@ -87,7 +88,7 @@ function Posts(props) {
                     headers: { "token": localStorage.getItem("token") }
                 }
             ).then(response => {
-                console.log("Updated post view count (" + response.data.code+ ")");
+                //console.log("Updated post view count (" + response.data.code+ ")");
             }).catch(error => {
                 console.log(error);
             });
@@ -106,7 +107,7 @@ function Posts(props) {
         <article className="post"  onClick={toDetial}>
             <div className="postingDetails" onClick={(e) => e.stopPropagation()}>
                 <Link to={`/profile/${props.poster.id}`}>
-                    <img className="posterImage" src={props.poster.avatar} alt="Poster"/>
+                    <img className="posterImage" src={props.poster.avatar || userInitialState.avatar} alt="Poster"/>
                 </Link>
                 <div className="post-info">
                     <Link

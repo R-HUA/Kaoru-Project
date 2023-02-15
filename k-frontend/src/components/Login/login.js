@@ -37,9 +37,6 @@ function Login(props) {
         });
     };
 
-
-
-
     const handleChange = (e) => {
         const {name} = e.target;
 
@@ -48,6 +45,11 @@ function Login(props) {
         }
 
     }
+
+    React.useEffect(() => {
+        usernameRef.current.value = 'test';
+        passwordRef.current.value = '1111';
+    }, [])
 
     const submitForm = (event) => {
 

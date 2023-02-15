@@ -124,13 +124,19 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         List<Post> thisPage = postPage.getRecords();
         List<PostVo> postVos = BeanCopyUtils.copyBeanList(thisPage, PostVo.class);
 
-        // TODO: set view count
+        // set view count and poster
+        postVos.forEach(postVo -> {
+            try {
+                postVo.setViewCount(((Integer)redisCache.getCacheMapValue("post:viewCounts", String.valueOf(postVo.getId()))).longValue());
+            } catch (Exception e){
+                log.error("Get view count of post from redis failed: " + e.getMessage());
+            }
 
-        if (usersMap != null) {
-            postVos.forEach(postVo -> {
+            if (usersMap != null){
                 postVo.setPoster(usersMap.get(postVo.getCreateBy()));
-            });
-        }
+            }
+        });
+
 
         return ResponseResult.okResult(new PageVO(postVos, postPage.getTotal()));
     }

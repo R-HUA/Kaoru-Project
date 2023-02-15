@@ -96,7 +96,7 @@ const ArticleList = (props) => {
 
     useEffect(() => {
         if (props.uid){
-            console.log("uid: ", props.uid);
+            //console.log("uid: ", props.uid);
 
 
             const handleScroll = (e) => {
@@ -142,7 +142,7 @@ const ArticleList = (props) => {
                                 content: error + '',
                             });
                         }).finally(() => {
-                            console.log("isLoding: ", isLoding);
+                            //console.log("isLoding: ", isLoding);
                             setIsLoding(false);
                         });
                     }

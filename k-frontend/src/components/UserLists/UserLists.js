@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Avatar, List, Modal} from "antd";
 import Follow from "../Follow/Follow";
+import {Link} from "react-router-dom";
+import {userInitialState} from "../../reducers/userReducer";
 
 function UserLists(props) {
 
@@ -8,7 +10,7 @@ function UserLists(props) {
 
         <Modal
             open= {props.isOpen}
-            title= "Title"
+            title={props.title || "User Lists"}
             footer= {null}
             onCancel ={() => props.setOpen(false)}
         >
@@ -20,7 +22,7 @@ function UserLists(props) {
                         key={item.id}
                         actions={[<Follow
                             disply = {true}
-                            type = "text"
+                            type = "link"
                             uid = {item.id}
                             userInfo = {item}
                             followLists = {[]}
@@ -28,9 +30,9 @@ function UserLists(props) {
                         />]}
                     >
                         <List.Item.Meta
-                            avatar={<Avatar src={item.avatar}/>}
-                            title={item.nickName}
-                            description={item.description}
+                            avatar={<Avatar src={item.avatar || userInitialState.avatar}/>}
+                            title={<Link to={"profile/" + item.id}>{item.nickName}</Link>}
+                            description={item.description || 'Default signature given to everyone~'}
                         />
                     </List.Item>
                 )}

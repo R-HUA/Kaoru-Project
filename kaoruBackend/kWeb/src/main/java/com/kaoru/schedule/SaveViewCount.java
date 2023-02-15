@@ -1,7 +1,9 @@
 package com.kaoru.schedule;
 
 import com.kaoru.pojo.Article;
+import com.kaoru.pojo.Post;
 import com.kaoru.service.ArticleService;
+import com.kaoru.service.PostService;
 import com.kaoru.utils.RedisCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,14 @@ public class SaveViewCount {
     @Autowired
     private ArticleService articleService;
 
-    @Scheduled( cron = "0 0/50 * * * ?")
-    public void saveViewCount(){
-        Map<String, Integer> viewCountMap = redisCache.getCacheMap("article:viewCounts");
+    @Autowired
+    private PostService postService;
 
-        List<Article> articles = viewCountMap.entrySet()
+    @Scheduled( cron = "0 0/30 * * * ?")
+    public void saveViewCount(){
+        Map<String, Integer> aViewCountMap = redisCache.getCacheMap("article:viewCounts");
+
+        List<Article> articles = aViewCountMap.entrySet()
                 .stream()
                 .map(entry -> new Article(Long.valueOf(entry.getKey()), entry.getValue().longValue()))
                 .collect(Collectors.toList());
@@ -34,6 +39,18 @@ public class SaveViewCount {
 
         articleService.updateBatchById(articles);
 
-        log.info("save view count to database successfully.");
+
+        Map<String, Integer> pviewCountMap = redisCache.getCacheMap("post:viewCounts");
+
+        List<Post> posts = pviewCountMap.entrySet()
+                .stream()
+                .map(entry -> new Post(Long.valueOf(entry.getKey()), entry.getValue().longValue()))
+                .collect(Collectors.toList());
+
+        postService.updateBatchById(posts);
+
+
+
+        log.info("Save view count to database successfully. 保存浏览量到数据库");
     }
 }

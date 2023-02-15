@@ -15,7 +15,7 @@ function SideCard(props) {
         }
     }, [userInfo]);
 
-    console.log(userInfo);
+    // console.log(userInfo);
 
     return (
 

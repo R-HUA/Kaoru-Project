@@ -75,6 +75,7 @@ export default function Publishing(props) {
                     // console.log(res)
                     if (res.data.code === 200) {
                         uploadRef.current.clearFiles();    // delete the uploaded files
+                        setImageList([]);   // reset the image list
                         inputAreaRef.current.value = "";   // clear the input area
                         message.success("Post successfully");
                     }

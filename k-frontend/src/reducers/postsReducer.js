@@ -6,6 +6,7 @@ let initialState = {
 };
 
 const postsReducer = (state = initialState, action) => {
+
     switch (action.type) {
         case 'FLOWING_POSTS_ADD_CONTENT':
             return {
@@ -25,6 +26,10 @@ const postsReducer = (state = initialState, action) => {
                 flowingPostTotal: action.payload,
             }
         case 'LOGOUT':
+            return initialState;
+        case 'ADD_FOLLOWING':
+            return initialState;
+        case 'REMOVE_FOLLOWING':
             return initialState;
         default:
             return state;

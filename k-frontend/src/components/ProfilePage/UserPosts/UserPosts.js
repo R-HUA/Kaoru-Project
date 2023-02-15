@@ -43,7 +43,7 @@ function UserPosts(props) {
                             const newList = [...postList, ...response.data.data.rows];
 
                             setPostList(newList);
-                            console.log(response.data.data.total , newList.length);
+                            // console.log(response.data.data.total , newList.length);
                             setIsBottom(response.data.data.total <= newList.length);
                             setCurrentPage(nextPage);
                         } else {

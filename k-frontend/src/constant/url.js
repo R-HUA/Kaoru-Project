@@ -1,8 +1,10 @@
 
 
-let url = "http://xn--kaoru-xt2k158aoz2c.live/"
+const url1 = "https://www.xn--kaoru-xt2k158aoz2c.live/api"
+const url2 = "http://172.16.16.157:8080"
 
-export const WEB_URL = "http://172.16.16.157:8080";
+
+export const WEB_URL = url1;
 
 export const LOGIN_URL = WEB_URL + "/login";
 
